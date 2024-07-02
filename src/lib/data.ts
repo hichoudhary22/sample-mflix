@@ -57,7 +57,7 @@ export async function searchMovies({
 }: {
   query: Object;
   limit?: number;
-  skip: number;
+  skip?: number;
   sortBy?: string;
   sortOrder?: 1 | -1;
 }) {
@@ -66,7 +66,7 @@ export async function searchMovies({
   const movies = await collection
     .find(query)
     .sort(sortBy && sortOrder ? { [sortBy]: sortOrder } : { year: -1 })
-    .skip(skip)
+    .skip(skip ? skip : 0)
     .limit(limit ? limit : 5)
     .project({ poster: 1, title: 1, IMDb: 1, genres: 1, plot: 1 })
     .toArray();
