@@ -1,7 +1,8 @@
 "use client";
 import { searchMovies } from "@/lib/data";
-import { movie } from "@/lib/defination";
+import { movie, queryResult } from "@/lib/defination";
 import MovieCard from "@/ui/movies/movieCard";
+import Paginate from "@/ui/movies/paginate";
 import SearchPanel from "@/ui/movies/searchPanel";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -15,7 +16,7 @@ export default function SearchMovies() {
 }
 
 function SuspendedElement() {
-  const [searchedMovies, setSearchedMovies] = useState<Array<movie>>();
+  const [queryResult, setQueryResult] = useState<queryResult>();
 
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
@@ -32,10 +33,11 @@ function SuspendedElement() {
       const sortBy =
         searchParams.get("Sort By") &&
         formatSortBy(searchParams.get("Sort By"));
+      const pageNum = searchParams.get("page");
 
       const query = {
-        /* ...(title && { title: { $regex: title, $options: "i" } }), */
-        ...(title && { $text: { $search: title } }),
+        ...(title && { title: { $regex: title, $options: "i" } }),
+        // ...(title && { $text: { $search: { text: title, path: "title" } } }),
         ...(type && { type }),
         ...(genres.length && { genres: { $in: genres } }),
         ...(countries.length && { countries: { $in: countries } }),
@@ -44,7 +46,8 @@ function SuspendedElement() {
 
       const req = {
         query,
-        limit: 10,
+        limit: 20,
+        skip: (Number(pageNum) - 1) * 20,
         ...(sortBy && { sortBy }),
         ...(sortOrder && { sortOrder }),
       };
@@ -53,10 +56,10 @@ function SuspendedElement() {
       console.log("searching");
 
       const data = await searchMovies(req);
-      const mov = JSON.parse(data);
-      setSearchedMovies(mov);
+      const searchResult = JSON.parse(data);
+      setQueryResult(searchResult);
 
-      console.log(mov);
+      console.log(searchResult);
       console.log("search complete");
     })();
   }, [searchParams]);
@@ -64,11 +67,21 @@ function SuspendedElement() {
   return (
     <div className="gap-2">
       <SearchPanel searchParams={searchParams} params={params} />
+      <Paginate
+        noOfMovies={queryResult?.noOfMovies}
+        searchParams={searchParams}
+        params={params}
+      />
       <div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-1">
-        {searchedMovies?.map((movie) => (
+        {queryResult?.movies.map((movie) => (
           <MovieCard movie={movie} key={movie._id.toString()} />
         ))}
       </div>
+      <Paginate
+        noOfMovies={queryResult?.noOfMovies}
+        searchParams={searchParams}
+        params={params}
+      />
     </div>
   );
 }
@@ -82,40 +95,3 @@ function formatSortOrder(sortOrder: string | null): 1 | -1 {
   if (sortOrder === "ascending") return 1;
   else return -1;
 }
-
-/* 
-async function handelSearch() {
-    if (
-      !title &&
-      !type.length &&
-      genres.length &&
-      countries.length &&
-      year.length
-    )
-      return;
-
-    console.log(params.toString());
-
-    interface query {
-      title?: Object;
-      type?: Array<string>;
-      genres?: Object;
-      countries?: Object;
-      year?: Object;
-    }
-
-    const query: query = {};
-    title && (query.title = { $regex: title, $options: "i" });
-    type.length && (query.type = type);
-    genres.length && (query.genres = { $in: genres });
-    countries.length && (query.countries = { $in: countries });
-    year.length && (query.year = { $in: year });
-
-    console.log(query);
-
-    const data = await searchMovies({ query, limit: 20 });
-    const searchedMovies = await JSON.parse(data);
-
-    setSearchedMovies(searchedMovies);
-  }
-*/

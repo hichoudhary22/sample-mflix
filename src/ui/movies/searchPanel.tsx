@@ -159,8 +159,10 @@ export default function SearchPanel({
             params.set("title", e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter")
+            if (e.key === "Enter") {
+              params.set("page", "1");
               router.push(`${pathName}?${params.toString()}`);
+            }
           }}
           className="rounded-full border bg-black px-3 py-1 text-white focus:outline-none"
           placeholder="Enter Title"
@@ -217,7 +219,12 @@ export default function SearchPanel({
         />
         {sortOrder ? "Descending" : "Ascending"}
       </button>
-      <Button onClick={() => router.push(`${pathName}?${params.toString()}`)}>
+      <Button
+        onClick={() => {
+          params.set("page", "1");
+          router.push(`${pathName}?${params.toString()}}`);
+        }}
+      >
         Go
       </Button>
     </div>

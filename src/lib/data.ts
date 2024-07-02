@@ -51,11 +51,13 @@ export async function getComments(id: ObjectId) {
 export async function searchMovies({
   query,
   limit,
+  skip,
   sortBy,
   sortOrder,
 }: {
   query: Object;
   limit?: number;
+  skip: number;
   sortBy?: string;
   sortOrder?: 1 | -1;
 }) {
@@ -64,9 +66,11 @@ export async function searchMovies({
   const movies = await collection
     .find(query)
     .sort(sortBy && sortOrder ? { [sortBy]: sortOrder } : { year: -1 })
+    .skip(skip)
     .limit(limit ? limit : 5)
     .project({ poster: 1, title: 1, IMDb: 1, genres: 1, plot: 1 })
     .toArray();
-  const data = JSON.stringify(movies);
+  const noOfMovies = await collection.countDocuments(query);
+  const data = JSON.stringify({ movies, noOfMovies });
   return data;
 }

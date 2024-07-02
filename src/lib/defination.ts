@@ -2,6 +2,11 @@
 
 import { ObjectId } from "mongodb";
 
+export interface queryResult {
+  movies: Array<movie>;
+  noOfMovies: number;
+}
+
 export interface movie {
   _id: ObjectId;
   plot: string;
