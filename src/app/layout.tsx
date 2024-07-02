@@ -13,6 +13,8 @@
 
 import NavBar from "@/ui/app/navBar";
 import "./globals.css";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default function RootLayout({
   children,
@@ -21,9 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className=" w-11/12 m-auto">
+      <body className=" m-auto w-11/12">
         <NavBar />
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </body>
     </html>
   );

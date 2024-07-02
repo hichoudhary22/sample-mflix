@@ -52,15 +52,9 @@ function SuspendedElement() {
         ...(sortOrder && { sortOrder }),
       };
 
-      console.log(req);
-      console.log("searching");
-
       const data = await searchMovies(req);
       const searchResult = JSON.parse(data);
       setQueryResult(searchResult);
-
-      console.log(searchResult);
-      console.log("search complete");
     })();
   }, [searchParams]);
 
@@ -77,11 +71,13 @@ function SuspendedElement() {
           <MovieCard movie={movie} key={movie._id.toString()} />
         ))}
       </div>
-      <Paginate
-        noOfMovies={queryResult?.noOfMovies}
-        searchParams={searchParams}
-        params={params}
-      />
+      {queryResult?.noOfMovies && queryResult.noOfMovies > 20 && (
+        <Paginate
+          noOfMovies={queryResult?.noOfMovies}
+          searchParams={searchParams}
+          params={params}
+        />
+      )}
     </div>
   );
 }

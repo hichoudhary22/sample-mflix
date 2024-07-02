@@ -31,7 +31,7 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
       {/* photo, geners and full plot */}
       <div className="my-4 grid gap-6 sm:grid-cols-[1fr,3fr]">
         <div className="relative aspect-[2/3] min-w-[200px] max-w-[400px]">
-          <Image src={movie.poster} alt="movie poster" fill sizes="20vw" />
+          <Image src={movie.poster} alt="movie poster" fill sizes="100vw" />
         </div>
         <div>
           <div className="my-4 flex flex-wrap gap-2">

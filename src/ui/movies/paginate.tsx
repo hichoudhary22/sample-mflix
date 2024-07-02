@@ -28,6 +28,8 @@ export default function Paginate({
     router.push(`${pathName}?${params.toString()}`);
   }, [activePage, params, pathName, router]);
 
+  if (noOfPages < 2) return <p>Showing all movies</p>;
+
   return (
     <div className="my-2">
       <span

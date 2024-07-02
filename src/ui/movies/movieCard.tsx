@@ -7,12 +7,12 @@ export default function MovieCard({ movie }: { movie: movie }) {
   return (
     movie?.poster && (
       <Link href={`/movie/${movie._id}`}>
-        <div className="relative aspect-[2/3] min-w-[150px] max-w-[230px] transition-all hover:z-10 hover:scale-125">
+        <div className="relative aspect-[2/3] min-w-[150px] max-w-[230px] transition-all hover:z-10 hover:scale-110">
           <Image
             fill
             src={movie.poster}
             alt="movie image"
-            sizes="20vw"
+            sizes="40vw"
             style={{
               borderRadius: "6px",
               filter: "brightness(.80)",
