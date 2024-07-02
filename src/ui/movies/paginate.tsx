@@ -24,9 +24,10 @@ export default function Paginate({
   );
 
   useEffect(() => {
+    console.log(activePage);
     params.set("page", `${activePage}`);
     router.push(`${pathName}?${params.toString()}`);
-  }, [activePage, params, pathName, router]);
+  }, [activePage, pathName, router]);
 
   if (noOfPages < 2) return <p>Showing all movies</p>;
 

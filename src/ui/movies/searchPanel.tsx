@@ -222,7 +222,7 @@ export default function SearchPanel({
       <Button
         onClick={() => {
           params.set("page", "1");
-          router.push(`${pathName}?${params.toString()}}`);
+          router.push(`${pathName}?${params.toString()}`);
         }}
       >
         Go
