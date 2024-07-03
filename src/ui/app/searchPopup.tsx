@@ -17,8 +17,8 @@ export default function SearchPopup() {
   const execSearch = useDebouncedCallback(async (searchText: string) => {
     const query = { title: { $regex: searchText, $options: "i" } };
     const data = await searchMovies({ query });
-    const movies = await JSON.parse(data);
-    setSearchedMovies(movies);
+    const searchedData = await JSON.parse(data);
+    setSearchedMovies(searchedData.movies);
   }, 500);
 
   return (
