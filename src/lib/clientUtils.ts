@@ -1,4 +1,5 @@
 import { RefObject, useCallback, useEffect, useRef } from "react";
+
 export function useDebouncedCallback(callback: Function, delay: number) {
   const timerId = useRef<NodeJS.Timeout>();
   return useCallback(
@@ -8,6 +9,7 @@ export function useDebouncedCallback(callback: Function, delay: number) {
       function later() {
         clearTimeout(timerId.current);
         callback(searchText);
+        console.log("debounced callback");
       }
     },
     [callback, delay],

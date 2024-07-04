@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { movie } from "@/lib/defination";
 import { searchMovies } from "@/lib/data";
 import SearchedMoviesItem from "./searchedMoviesItem";
@@ -8,11 +8,13 @@ import Link from "next/link";
 import searchSvg from "../../../public/search.svg";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function SearchPopup() {
   const [showSearchPanel, setShowSearchPanel] = useState(false);
   const [searchedMovies, setSearchedMovies] = useState<movie[] | []>([]);
   const [searchText, setSearchText] = useState("");
+  const router = useRouter();
 
   const execSearch = useDebouncedCallback(async (searchText: string) => {
     const query = { title: { $regex: searchText, $options: "i" } };
@@ -20,6 +22,16 @@ export default function SearchPopup() {
     const searchedData = await JSON.parse(data);
     setSearchedMovies(searchedData.movies);
   }, 500);
+
+  useEffect(() => {
+    if (showSearchPanel) execSearch(searchText);
+  }, [searchText]);
+
+  function resetSearchPopup() {
+    setSearchText("");
+    setSearchedMovies([]);
+    setShowSearchPanel(false);
+  }
 
   return (
     <>
@@ -35,8 +47,15 @@ export default function SearchPopup() {
       {showSearchPanel && (
         <div
           className="fixed left-0 top-0 z-40 h-full w-full backdrop-blur-sm"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") resetSearchPopup();
+            if (e.key === "Enter") {
+              resetSearchPopup();
+              router.push(`/movies/searchMovies?title=${searchText}`);
+            }
+          }}
           onClick={(e) => {
-            if (e.currentTarget === e.target) setShowSearchPanel(false);
+            if (e.currentTarget === e.target) resetSearchPopup();
           }}
         >
           <div className="mx-auto my-28 max-w-3xl rounded-xl border bg-[rgb(var(--background-rgb))] p-6">
@@ -46,15 +65,14 @@ export default function SearchPopup() {
                 className="min-w-6 flex-grow rounded-full px-4 py-2 text-3xl text-black focus:outline-none"
                 autoFocus
                 onChange={(e) => {
-                  setSearchText(e.target.value);
-                  execSearch(searchText);
+                  if (e.target.value !== null) setSearchText(e.target.value);
                 }}
                 value={searchText}
               />
               <Link
                 href={`/movies/searchMovies?title=${searchText}`}
                 className="m-1 rounded-full bg-black px-8 py-1.5 text-2xl text-white"
-                onClick={() => setShowSearchPanel(false)}
+                onClick={() => resetSearchPopup()}
               >
                 Go
               </Link>
