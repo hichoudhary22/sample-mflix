@@ -21,9 +21,15 @@ function SuspendedElement() {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
 
+  const [activePage, setActivePage] = useState(
+    Number(searchParams.get("page")) || 1,
+  );
+
   useEffect(() => {
     // title type genres countries year test
     (async () => {
+      setActivePage(Number(searchParams.get("page")));
+
       const title = searchParams.get("title");
       const type = searchParams.get("type");
       const genres = searchParams.getAll("genres");
@@ -33,7 +39,7 @@ function SuspendedElement() {
       const sortBy =
         searchParams.get("Sort By") &&
         formatSortBy(searchParams.get("Sort By"));
-      const pageNum = searchParams.get("page");
+      // const pageNum = searchParams.get("page");
 
       const query = {
         ...(title && { title: { $regex: title, $options: "i" } }),
@@ -47,7 +53,7 @@ function SuspendedElement() {
       const req = {
         query,
         limit: 20,
-        skip: (Number(pageNum) - 1) * 20,
+        skip: (activePage - 1) * 20,
         ...(sortBy && { sortBy }),
         ...(sortOrder && { sortOrder }),
       };
@@ -56,15 +62,16 @@ function SuspendedElement() {
       const searchResult = JSON.parse(data);
       setQueryResult(searchResult);
     })();
-  }, [searchParams]);
+  }, [searchParams, activePage]);
 
   return (
     <div className="gap-2">
       <SearchPanel searchParams={searchParams} params={params} />
       <Paginate
         noOfMovies={queryResult?.noOfMovies}
-        searchParams={searchParams}
         params={params}
+        activePage={activePage}
+        setActivePage={setActivePage}
       />
       <div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-1">
         {queryResult?.movies.map((movie) => (
@@ -74,8 +81,9 @@ function SuspendedElement() {
       {queryResult?.noOfMovies && queryResult.noOfMovies > 20 && (
         <Paginate
           noOfMovies={queryResult?.noOfMovies}
-          searchParams={searchParams}
           params={params}
+          activePage={activePage}
+          setActivePage={setActivePage}
         />
       )}
     </div>

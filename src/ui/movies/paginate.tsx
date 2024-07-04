@@ -1,91 +1,93 @@
-import {
-  ReadonlyURLSearchParams,
-  usePathname,
-  useRouter,
-} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function Paginate({
   noOfMovies,
-  searchParams,
   params,
+  activePage,
+  setActivePage,
 }: {
   noOfMovies?: number;
-  searchParams: ReadonlyURLSearchParams;
   params: URLSearchParams;
+  activePage: number;
+  setActivePage: Function;
 }) {
   const pathName = usePathname();
   const router = useRouter();
 
   const noOfPages = noOfMovies ? Math.ceil(noOfMovies / 20) : 1;
-  const [activePage, setActivePage] = useState(
-    Number(searchParams.get("page")) || 1,
-  );
 
-  useEffect(() => {
-    console.log(activePage);
-    params.set("page", `${activePage}`);
+  // useEffect(() => {
+  //   params.set("page", `${activePage}`);
+  //   router.push(`${pathName}?${params.toString()}`);
+  // }, [activePage, pathName, router]);
+
+  function pageChange(num: number) {
+    params.set("page", `${num}`);
     router.push(`${pathName}?${params.toString()}`);
-  }, [activePage, pathName, router]);
+  }
 
   if (noOfPages < 2) return <p>Showing all movies</p>;
 
   return (
     <div className="my-2">
-      <span
+      <button
         className="mx-[2px] font-semibold"
         onClick={() => {
-          if (activePage > 1) setActivePage((p) => p - 1);
+          if (activePage > 1) pageChange(activePage - 1);
         }}
       >
         &lt;
-      </span>
-      {activePage > 2 && <PageNumber num={1} setActivePage={setActivePage} />}
-      {activePage - 2 >= 1 && <span>.....</span>}
-      {activePage > 1 && (
-        <PageNumber num={activePage - 1} setActivePage={setActivePage} />
+      </button>
+
+      <PageNumber num={1} pageChange={pageChange} active={activePage === 1} />
+      {activePage - 2 > 1 && <span>.....</span>}
+      {activePage - 1 > 1 && (
+        <PageNumber num={activePage - 1} pageChange={pageChange} />
       )}
-      <PageNumber
-        num={activePage}
-        setActivePage={setActivePage}
-        active={true}
-      />
-      {activePage < noOfPages && (
-        <PageNumber num={activePage + 1} setActivePage={setActivePage} />
+      {activePage !== 1 && activePage !== noOfPages && (
+        <PageNumber num={activePage} pageChange={pageChange} active={true} />
+      )}
+      {activePage + 1 < noOfPages && (
+        <PageNumber num={activePage + 1} pageChange={pageChange} />
       )}
 
-      {activePage + 2 <= noOfPages && <span>.....</span>}
-      {activePage < noOfPages - 2 && (
-        <PageNumber num={noOfPages} setActivePage={setActivePage} />
-      )}
-      <span
+      {activePage + 2 < noOfPages && <span>.....</span>}
+
+      <PageNumber
+        num={noOfPages}
+        pageChange={pageChange}
+        active={activePage === noOfPages}
+      />
+
+      <button
         className="mx-[2px] font-semibold"
         onClick={() => {
-          if (activePage < noOfPages) setActivePage((p) => p + 1);
+          if (activePage < noOfPages) pageChange(activePage - 1);
         }}
       >
         &gt;
-      </span>
+      </button>
     </div>
   );
 }
 
 function PageNumber({
   num,
-  setActivePage,
+  pageChange,
   active,
 }: {
   num: number;
-  setActivePage: Function;
+  pageChange: Function;
   active?: boolean;
 }) {
   return (
-    <span
+    <button
       className={`mx-[2px] rounded-full border border-black px-2 py-1 ${active && `bg-black text-white`}`}
-      onClick={() => setActivePage(num)}
+      onClick={() => pageChange(num)}
     >
       {num}
-    </span>
+    </button>
   );
 }
