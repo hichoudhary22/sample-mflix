@@ -21,7 +21,7 @@ export default function SearchPopup() {
     const data = await searchMovies({ query });
     const searchedData = await JSON.parse(data);
     setSearchedMovies(searchedData.movies);
-  }, 500);
+  }, 200);
 
   useEffect(() => {
     if (showSearchPanel) execSearch(searchText);

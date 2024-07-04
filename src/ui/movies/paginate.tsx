@@ -64,7 +64,7 @@ export default function Paginate({
       <button
         className="mx-[2px] font-semibold"
         onClick={() => {
-          if (activePage < noOfPages) pageChange(activePage - 1);
+          if (activePage < noOfPages) pageChange(activePage + 1);
         }}
       >
         &gt;
