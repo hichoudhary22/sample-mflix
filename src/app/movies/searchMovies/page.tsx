@@ -28,7 +28,7 @@ function SuspendedElement() {
   useEffect(() => {
     // title type genres countries year test
     (async () => {
-      setActivePage(Number(searchParams.get("page")));
+      setActivePage(Number(searchParams.get("page") || 1));
 
       const title = searchParams.get("title");
       const type = searchParams.get("type");
