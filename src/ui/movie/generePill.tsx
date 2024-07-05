@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 export default function GenerePill({ g, sm }: { g: string; sm?: boolean }) {
   return (
     <div
@@ -13,4 +12,3 @@ export default function GenerePill({ g, sm }: { g: string; sm?: boolean }) {
     </div>
   );
 }
-//
