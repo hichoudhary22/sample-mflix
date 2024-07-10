@@ -10,6 +10,7 @@ export default function SearchedMoviesItem({
   mov: movie;
   setShowSearchPanel: Function;
 }) {
+  console.log(mov);
   return (
     mov.poster && (
       <Link href={`/movie/mongoDB/${mov._id}`}>
@@ -17,7 +18,7 @@ export default function SearchedMoviesItem({
           className="my-2 flex rounded-md border bg-[rgb(var(--background-rgb))]"
           onClick={() => setShowSearchPanel(false)}
         >
-          <div className="relative aspect-[2/3] w-[120px]">
+          <div className="relative aspect-[2/3] min-w-[120px]">
             <Image
               src={mov.poster}
               alt="movie poster"

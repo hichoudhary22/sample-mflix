@@ -15,7 +15,7 @@ export async function getAllMovies(
   const movies = await collection
     .find(query)
     .sort({ released: -1 })
-    .limit(limit || 30)
+    .limit(limit || 50)
     .project<movie>({
       _id: 1,
       title: 1,
@@ -71,7 +71,7 @@ export async function searchMovies({
     .sort(sortBy && sortOrder ? { [sortBy]: sortOrder } : { year: -1 })
     .skip((page - 1) * 20)
     .limit(limit ? limit : 5)
-    .project({ poster: 1, title: 1, IMDb: 1, genres: 1, plot: 1 })
+    .project({ poster: 1, title: 1, imdb: 1, genres: 1, plot: 1 })
     .toArray();
   const noOfMovies = await collection.countDocuments(query);
   const data = JSON.stringify({ movies, noOfMovies });

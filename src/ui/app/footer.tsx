@@ -32,7 +32,9 @@ export default function Footer() {
         </p>
       </div>
       <div className="m-auto sm:w-[50vw]">
-        <p className="text-center font-semibold">Our other projects</p>
+        <p className="text-center font-semibold underline">
+          Our other projects
+        </p>
         <div className="justify-center sm:flex">
           {ourOtherProjects.map((project) => (
             <div
@@ -56,6 +58,15 @@ export default function Footer() {
             </div>
           ))}
         </div>
+      </div>
+      <div>
+        <hr />
+        <Link
+          href={"https://hichoudhary22.github.io/Portfolio/"}
+          className="my-3 flex justify-center underline"
+        >
+          Contacts
+        </Link>
       </div>
     </section>
   );
