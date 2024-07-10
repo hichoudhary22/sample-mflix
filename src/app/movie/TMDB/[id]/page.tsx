@@ -1,6 +1,7 @@
 import { getTMDBMovie } from "@/lib/data";
 import { TMDBMovie } from "@/lib/defination";
 import { readableDate, toHHMM } from "@/lib/utils";
+import TextPill from "@/ui/movie/textPill";
 import TMDBMovieCard from "@/ui/movies/tmdbMovieCard";
 import Image from "next/image";
 
@@ -147,13 +148,5 @@ export default async function TMDBMovieDetailsPage({
         </div>
       </section>
     </main>
-  );
-}
-
-function TextPill({ text }: { text: string }) {
-  return (
-    <p className="mx-1 inline-flex rounded-full border px-3 py-1 text-sm">
-      {text}
-    </p>
   );
 }

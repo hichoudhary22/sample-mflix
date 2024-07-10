@@ -81,7 +81,7 @@ export default function SearchPopup() {
             </div>
             <div className="max-h-[400px] overflow-scroll">
               {searchedMovies.length > 0 &&
-                searchedMovies.map((mov) => (
+                searchedMovies?.map((mov) => (
                   <SearchedMoviesItem
                     key={mov._id.toString()}
                     mov={mov}

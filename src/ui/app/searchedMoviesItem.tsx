@@ -1,8 +1,7 @@
 import { movie } from "@/lib/defination";
 import Image from "next/image";
 import Link from "next/link";
-import GenerePill from "../movie/generePill";
-import movieSvg from "../../../public/movie.svg";
+import TextPill from "../movie/textPill";
 
 export default function SearchedMoviesItem({
   mov,
@@ -39,7 +38,7 @@ export default function SearchedMoviesItem({
               {mov.tomatoes && <p>Rotten : {mov?.tomatoes.viewer.rating}</p>}
             </div>
             <div className="flex gap-2">
-              {mov.genres?.map((g) => <GenerePill g={g} key={g} sm={true} />)}
+              {mov.genres?.map((g) => <TextPill text={g} key={g} />)}
             </div>
             <p className="line-clamp-3 text-sm">{mov.plot}</p>
           </div>
