@@ -80,7 +80,7 @@ export default async function TMDBMovieDetailsPage({
       <section className="my-4">
         <span className="text-xl font-semibold">Cast :</span>
         <div className="flex gap-3 overflow-scroll">
-          {TMDB_Movie.credits.cast.map((cast) => (
+          {TMDB_Movie.credits.cast?.map((cast) => (
             <div key={cast.id} className="rounded-md border">
               <Image
                 height={80}
@@ -112,7 +112,7 @@ export default async function TMDBMovieDetailsPage({
         </div>
         <div className="my-4">
           <p className="font-semibold">Language :</p>
-          {TMDB_Movie.spoken_languages.map((language) => (
+          {TMDB_Movie.spoken_languages?.map((language) => (
             <TextPill key={language.iso_639_1} text={language.english_name} />
           ))}
         </div>
@@ -121,7 +121,7 @@ export default async function TMDBMovieDetailsPage({
       <section>
         <p className="font-semibold">Reviews :</p>
         <div className="flex overflow-x-scroll">
-          {TMDB_Movie.reviews.results.map((review) => (
+          {TMDB_Movie.reviews.results?.map((review) => (
             <div
               key={review.id}
               className="m-1  min-w-[325px]  rounded-md border p-3"
@@ -141,7 +141,7 @@ export default async function TMDBMovieDetailsPage({
       <section>
         <p className="font-semibold">Recommendations :</p>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-2">
-          {TMDB_Movie.recommendations.results.map((movie) => (
+          {TMDB_Movie.recommendations.results?.map((movie) => (
             <TMDBMovieCard movie={movie} key={movie.id} />
           ))}
         </div>
