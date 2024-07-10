@@ -2,6 +2,9 @@
 import connectionPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 import { comment, movie } from "./defination";
+import fetch from "node-fetch";
+
+const TMDBAuthorization = process.env.TMDB_AUTHORIZATION as string;
 
 export async function getAllMovies(
   query: { [key: string]: string },
@@ -51,13 +54,13 @@ export async function getComments(id: ObjectId) {
 export async function searchMovies({
   query,
   limit,
-  skip,
+  page,
   sortBy,
   sortOrder,
 }: {
   query: Object;
   limit?: number;
-  skip?: number;
+  page: number | 1;
   sortBy?: string;
   sortOrder?: 1 | -1;
 }) {
@@ -66,11 +69,39 @@ export async function searchMovies({
   const movies = await collection
     .find(query)
     .sort(sortBy && sortOrder ? { [sortBy]: sortOrder } : { year: -1 })
-    .skip(skip ? skip : 0)
+    .skip((page - 1) * 20)
     .limit(limit ? limit : 5)
     .project({ poster: 1, title: 1, IMDb: 1, genres: 1, plot: 1 })
     .toArray();
   const noOfMovies = await collection.countDocuments(query);
   const data = JSON.stringify({ movies, noOfMovies });
   return data;
+}
+
+export async function searchTMDB(query: string, page: number) {
+  const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=true&page=${page}&sort_by=primary_release_date.desc`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: TMDBAuthorization,
+    },
+  };
+  const response = await fetch(url, options);
+  const data = await response.json();
+  return JSON.stringify(data);
+}
+
+export async function getTMDBMovie(id: string) {
+  const url = `https://api.themoviedb.org/3/movie/${id}?append_to_response=credits%2Creviews%2Crecommendations&language=en-US`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: TMDBAuthorization,
+    },
+  };
+  const response = await fetch(url, options);
+  const data = await response.json();
+  return JSON.stringify(data);
 }

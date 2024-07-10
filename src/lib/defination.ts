@@ -2,9 +2,76 @@
 
 import { ObjectId } from "mongodb";
 
-export interface queryResult {
+export interface mongoDBQueryResult {
   movies: Array<movie>;
   noOfMovies: number;
+}
+
+export interface TMDBQueryResult {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: Array<TMDBMovie>;
+}
+
+export interface TMDBMovie {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: Array<number>;
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  runtime: number;
+  genres: Array<{ id: number; name: string }>;
+  production_countries: Array<{ iso_3166_1: string; name: string }>;
+  production_companies: Array<{
+    id: number;
+    logo_path: string;
+    name: string;
+    origin_country: string;
+  }>;
+  spoken_languages: Array<{
+    english_name: string;
+    iso_639_1: string;
+    name: string;
+  }>;
+  credits: {
+    cast: Array<{
+      adult: boolean;
+      id: number;
+      name: string;
+      profile_path: string;
+      character: string;
+    }>;
+  };
+  reviews: {
+    total_results: number;
+    results: Array<{
+      author: string;
+      author_details: {
+        name: string;
+        username: string;
+        avatar_path: string;
+        rating: number;
+      };
+      content: string;
+      created_at: string;
+      updated_at: string;
+      url: string;
+      id: string;
+    }>;
+  };
+  recommendations: {
+    results: Array<TMDBMovie>;
+  };
 }
 
 export interface movie {

@@ -1,9 +1,11 @@
 "use client";
-import { searchMovies } from "@/lib/data";
-import { movie, queryResult } from "@/lib/defination";
+import { searchMovies, searchTMDB } from "@/lib/data";
+import { movie, mongoDBQueryResult, TMDBQueryResult } from "@/lib/defination";
+import MongoDBResultPanel from "@/ui/movies/mongoDBResultPanel";
 import MovieCard from "@/ui/movies/movieCard";
 import Paginate from "@/ui/movies/paginate";
 import SearchPanel from "@/ui/movies/searchPanel";
+import TMDBQueryResultPanel from "@/ui/movies/tmdbQueryResultPanel";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
@@ -16,10 +18,16 @@ export default function SearchMovies() {
 }
 
 function SuspendedElement() {
-  const [queryResult, setQueryResult] = useState<queryResult>();
+  const [mongoDBQueryResult, setMongoDBQueryResult] =
+    useState<mongoDBQueryResult>();
+  const [TMDBQueryResult, setTMDBQueryResult] = useState<TMDBQueryResult>();
 
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
+
+  const [searchedDB, setSearchedDB] = useState(
+    searchParams.get("searchedDB") || "MongoDB",
+  );
 
   const [activePage, setActivePage] = useState(
     Number(searchParams.get("page")) || 1,
@@ -30,7 +38,7 @@ function SuspendedElement() {
     (async () => {
       setActivePage(Number(searchParams.get("page") || 1));
 
-      const title = searchParams.get("title");
+      const title = searchParams.get("title") || "";
       const type = searchParams.get("type");
       const genres = searchParams.getAll("genres");
       const countries = searchParams.getAll("countries");
@@ -39,8 +47,7 @@ function SuspendedElement() {
       const sortBy =
         searchParams.get("Sort By") &&
         formatSortBy(searchParams.get("Sort By"));
-      // const pageNum = searchParams.get("page");
-
+      setSearchedDB(searchParams.get("searchedDB") || "MongoDB");
       const query = {
         ...(title && { title: { $regex: title, $options: "i" } }),
         // ...(title && { $text: { $search: { text: title, path: "title" } } }),
@@ -53,37 +60,41 @@ function SuspendedElement() {
       const req = {
         query,
         limit: 20,
-        skip: (activePage - 1) * 20,
+        page: activePage,
         ...(sortBy && { sortBy }),
         ...(sortOrder && { sortOrder }),
+        // ...(searchedDB && { searchedDB }),
       };
 
-      const data = await searchMovies(req);
+      const data =
+        searchedDB === "MongoDB"
+          ? await searchMovies(req)
+          : await searchTMDB(title, activePage);
       const searchResult = JSON.parse(data);
-      setQueryResult(searchResult);
+
+      searchedDB === "MongoDB"
+        ? setMongoDBQueryResult(searchResult)
+        : setTMDBQueryResult(searchResult);
     })();
-  }, [searchParams, activePage]);
+  }, [searchParams, activePage, searchedDB]);
 
   return (
     <div className="gap-2">
       <SearchPanel searchParams={searchParams} params={params} />
-      <Paginate
-        noOfMovies={queryResult?.noOfMovies}
-        params={params}
-        activePage={activePage}
-        setActivePage={setActivePage}
-      />
-      <div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-1">
-        {queryResult?.movies.map((movie) => (
-          <MovieCard movie={movie} key={movie._id.toString()} />
-        ))}
-      </div>
-      {queryResult?.noOfMovies && queryResult.noOfMovies > 20 && (
-        <Paginate
-          noOfMovies={queryResult?.noOfMovies}
+      {searchedDB === "MongoDB" && mongoDBQueryResult && (
+        <MongoDBResultPanel
           params={params}
           activePage={activePage}
           setActivePage={setActivePage}
+          mongoDBQueryResult={mongoDBQueryResult}
+        />
+      )}
+      {searchedDB === "TMDB" && TMDBQueryResult && (
+        <TMDBQueryResultPanel
+          TMDBQueryResult={TMDBQueryResult}
+          activePage={activePage}
+          setActivePage={setActivePage}
+          params={params}
         />
       )}
     </div>

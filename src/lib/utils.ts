@@ -7,3 +7,12 @@ export function toHHMM(min: number) {
   timeHHMM += MM.toString() + "m";
   return timeHHMM;
 }
+
+export function readableDate(isoString: string) {
+  const date = new Date(isoString).toLocaleString("en-GB", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  return date;
+}

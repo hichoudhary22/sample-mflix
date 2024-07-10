@@ -6,7 +6,7 @@ export default function MovieCard({ movie }: { movie: movie }) {
   // const movie: movie = JSON.parse(mov);
   return (
     movie?.poster && (
-      <Link href={`/movie/${movie._id}`}>
+      <Link href={`/movie/mongoDB/${movie._id}`}>
         <div className="relative aspect-[2/3] min-w-[150px] max-w-[230px] transition-all hover:z-10 hover:scale-110">
           <Image
             fill

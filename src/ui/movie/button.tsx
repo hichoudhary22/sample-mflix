@@ -9,7 +9,7 @@ export default function Button({
 }) {
   return (
     <button
-      className="flex w-full justify-center gap-2 self-center rounded-2xl bg-yellow-400 p-2 font-semibold"
+      className="my-2 flex w-full justify-center gap-2 self-center rounded-2xl bg-yellow-400 p-2 font-semibold"
       onClick={() => onClick()}
     >
       {children}

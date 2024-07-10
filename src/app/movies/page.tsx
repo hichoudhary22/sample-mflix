@@ -12,9 +12,8 @@ export default async function Movies({
         <p>
           movies containing
           <span className="text-blue-400">
-            {" "}
             {searchParams[Object.keys(searchParams)[0]]}
-          </span>{" "}
+          </span>
           as
           <span className="text-red-400"> {Object.keys(searchParams)[0]}</span>
         </p>

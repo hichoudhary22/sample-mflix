@@ -13,7 +13,7 @@ export default function SearchedMoviesItem({
 }) {
   return (
     mov.poster && (
-      <Link href={`/movie/${mov._id}`}>
+      <Link href={`/movie/mongoDB/${mov._id}`}>
         <div
           className="my-2 flex rounded-md border bg-[rgb(var(--background-rgb))]"
           onClick={() => setShowSearchPanel(false)}

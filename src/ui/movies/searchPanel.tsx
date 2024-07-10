@@ -6,11 +6,11 @@ import {
 } from "next/navigation";
 import { useState } from "react";
 import DropDown from "./dropDown";
-import Button from "../movie/button";
 import UniqueSelectDropDown from "./uniqueSelectDropDown";
 import Image from "next/image";
 import ascending from "../../../public/ascending.svg";
 import descending from "../../../public/descending.svg";
+import SelectDB from "./selectDB";
 
 export default function SearchPanel({
   searchParams,
@@ -21,6 +21,10 @@ export default function SearchPanel({
 }) {
   const router = useRouter();
   const pathName = usePathname();
+
+  const [searchedDB, setSearchedDB] = useState(
+    searchParams.get("searchedDB") || "MongoDB",
+  );
 
   const [title, setTitle] = useState(searchParams.get("title") || "");
   const [type, setType] = useState(searchParams.get("type") || "");
@@ -148,85 +152,106 @@ export default function SearchPanel({
     "IMDb Rating",
   ];
 
+  function goToSearchPage() {
+    router.push(`${pathName}?${params.toString()}`);
+  }
+
   return (
-    <div className="flex flex-wrap gap-2">
-      <div>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-            params.set("title", e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
+    <>
+      <div className="m-auto flex max-w-[800px] flex-wrap gap-2">
+        <div className=" flex w-full  rounded-full bg-white">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              params.set("title", e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                params.set("page", "1");
+                goToSearchPage();
+              }
+            }}
+            className="w-full rounded-full px-3 py-1 text-2xl text-black focus:outline-none"
+            placeholder="Enter Title"
+          />
+          <button
+            className="m-1 w-fit rounded-full bg-yellow-400 px-3 py-1 text-xl"
+            onClick={() => {
               params.set("page", "1");
-              router.push(`${pathName}?${params.toString()}`);
-            }
-          }}
-          className="rounded-full border bg-black px-3 py-1 text-white focus:outline-none"
-          placeholder="Enter Title"
-        />
+              goToSearchPage();
+            }}
+          >
+            Search
+          </button>
+        </div>
+
+        <div className="m-auto rounded-sm border p-2">
+          <SelectDB
+            searchedDB={searchedDB}
+            params={params}
+            setSearchedDB={setSearchedDB}
+            goToSearchPage={goToSearchPage}
+          />
+
+          {searchedDB === "MongoDB" && (
+            <div className="my-1 flex flex-wrap">
+              <UniqueSelectDropDown
+                name="type"
+                options={valOfType}
+                selectedOption={type}
+                setSelectedOption={setType}
+                params={params}
+              />
+              <DropDown
+                name="genres"
+                options={valOfGenres}
+                selectedOptions={genres}
+                setSelectedOptions={setGenres}
+                params={params}
+              />
+              <DropDown
+                name="countries"
+                options={valOfCountries}
+                selectedOptions={countries}
+                setSelectedOptions={setCountries}
+                params={params}
+              />
+              <DropDown
+                name="year"
+                options={valOfYear}
+                selectedOptions={year}
+                setSelectedOptions={setYear}
+                params={params}
+              />
+              <UniqueSelectDropDown
+                name="Sort By"
+                options={valOfSortBy}
+                selectedOption={sortBy}
+                setSelectedOption={setSortBy}
+                params={params}
+              />
+              <button
+                className="flex gap-2 rounded-full border px-5 py-1"
+                onClick={() => {
+                  setSortOrder((bool) => !bool);
+                  if (sortOrder) params.set("sortOrder", "ascending");
+                  else params.set("sortOrder", "descending");
+                }}
+              >
+                <Image
+                  width={20}
+                  height={20}
+                  src={sortOrder ? ascending : descending}
+                  alt="ascending or descending"
+                />
+                {sortOrder ? "Descending" : "Ascending"}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-      <UniqueSelectDropDown
-        name="type"
-        options={valOfType}
-        selectedOption={type}
-        setSelectedOption={setType}
-        params={params}
-      />
-      <DropDown
-        name="genres"
-        options={valOfGenres}
-        selectedOptions={genres}
-        setSelectedOptions={setGenres}
-        params={params}
-      />
-      <DropDown
-        name="countries"
-        options={valOfCountries}
-        selectedOptions={countries}
-        setSelectedOptions={setCountries}
-        params={params}
-      />
-      <DropDown
-        name="year"
-        options={valOfYear}
-        selectedOptions={year}
-        setSelectedOptions={setYear}
-        params={params}
-      />
-      <UniqueSelectDropDown
-        name="Sort By"
-        options={valOfSortBy}
-        selectedOption={sortBy}
-        setSelectedOption={setSortBy}
-        params={params}
-      />
-      <button
-        className="flex gap-2 rounded-full border px-5 py-1"
-        onClick={() => {
-          setSortOrder((bool) => !bool);
-          if (sortOrder) params.set("sortOrder", "ascending");
-          else params.set("sortOrder", "descending");
-        }}
-      >
-        <Image
-          width={20}
-          height={20}
-          src={sortOrder ? ascending : descending}
-          alt="ascending or descending"
-        />
-        {sortOrder ? "Descending" : "Ascending"}
-      </button>
-      <Button
-        onClick={() => {
-          params.set("page", "1");
-          router.push(`${pathName}?${params.toString()}`);
-        }}
-      >
-        Go
-      </Button>
-    </div>
+    </>
   );
 }

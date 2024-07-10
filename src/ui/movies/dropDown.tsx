@@ -20,7 +20,7 @@ export default function DropDown({
   return (
     <div ref={optionsRef}>
       <div
-        className="flex cursor-pointer gap-2 rounded-full border bg-black px-4 py-1 text-white"
+        className="flex w-fit cursor-pointer gap-2 rounded-full border bg-black px-4 py-1 text-white"
         onClick={() => {
           setShowOptionPanel((val) => !val);
         }}

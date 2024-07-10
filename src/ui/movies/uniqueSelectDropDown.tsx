@@ -19,7 +19,7 @@ export default function UniqueSelectDropDown({
   useOutsideClickAlert(optionsRef, setShowOptionPanel);
   return (
     <div ref={optionsRef}>
-      <div
+      <button
         className="flex cursor-pointer gap-2 rounded-full border bg-black px-4 py-1 text-white"
         onClick={() => {
           setShowOptionPanel((val) => !val);
@@ -27,7 +27,7 @@ export default function UniqueSelectDropDown({
       >
         <p className="capitalize">{name}</p>
         <p>{selectedOption ? "1" : "+"}</p>
-      </div>
+      </button>
       {showOptionPanel && (
         <div className="absolute z-50 flex max-h-[400px] flex-col flex-wrap overflow-y-scroll rounded-md border bg-slate-400 p-2">
           {options.map((option) => (

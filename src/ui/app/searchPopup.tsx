@@ -18,7 +18,7 @@ export default function SearchPopup() {
 
   const execSearch = useDebouncedCallback(async (searchText: string) => {
     const query = { title: { $regex: searchText, $options: "i" } };
-    const data = await searchMovies({ query });
+    const data = await searchMovies({ query, page: 1 });
     const searchedData = await JSON.parse(data);
     setSearchedMovies(searchedData.movies);
   }, 500);
@@ -51,7 +51,9 @@ export default function SearchPopup() {
             if (e.key === "Escape") resetSearchPopup();
             if (e.key === "Enter") {
               resetSearchPopup();
-              router.push(`/movies/searchMovies?title=${searchText}`);
+              router.push(
+                `/movies/searchMovies?searchedDB=MongoDB&title=${searchText}`,
+              );
             }
           }}
           onClick={(e) => {
@@ -70,7 +72,7 @@ export default function SearchPopup() {
                 value={searchText}
               />
               <Link
-                href={`/movies/searchMovies?title=${searchText}`}
+                href={`/movies/searchMovies?searchedDB=MongoDB&title=${searchText}`}
                 className="m-1 rounded-full bg-black px-8 py-1.5 text-2xl text-white"
                 onClick={() => resetSearchPopup()}
               >
