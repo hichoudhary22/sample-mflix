@@ -67,7 +67,7 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
         </div>
         <div>
           <p className="text-xl font-semibold underline">Language :</p>
-          {movie.languages.map((language) => (
+          {movie.languages?.map((language) => (
             <TextPill key={language} text={language} />
           ))}
         </div>
@@ -76,7 +76,7 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
       <section>
         <p className="font-semibold">Reviews :</p>
         <div className="flex overflow-x-scroll">
-          {movie.comments.map((comment) => (
+          {movie.comments?.map((comment) => (
             <div
               key={comment._id}
               className="m-1  min-w-[325px]  rounded-md border p-3"
@@ -97,7 +97,7 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
       <section>
         <p className="text-xl font-semibold underline">Recommendations :</p>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-2">
-          {movie.recommendations.map((mov) => (
+          {movie.recommendations?.map((mov) => (
             <MovieCard movie={mov} key={mov._id.toString()} />
           ))}
         </div>
