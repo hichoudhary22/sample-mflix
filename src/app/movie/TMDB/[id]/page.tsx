@@ -15,13 +15,11 @@ export default async function TMDBMovieDetailsPage({
   return (
     <main>
       {/* name, year and runtime */}
-      <section>
-        <div className="my-6">
-          <h1 className="text-2xl sm:text-4xl">{TMDB_Movie.title}</h1>
-          <p>
-            {TMDB_Movie.release_date} &#183; {toHHMM(TMDB_Movie.runtime)}
-          </p>
-        </div>
+      <section className="my-6">
+        <h1 className="text-2xl sm:text-4xl">{TMDB_Movie.title}</h1>
+        <p>
+          {TMDB_Movie.release_date} &#183; {toHHMM(TMDB_Movie.runtime)}
+        </p>
       </section>
       {/* poster, geners and overview */}
       <section className="my-4 grid gap-6 sm:grid-cols-[1fr,3fr]">

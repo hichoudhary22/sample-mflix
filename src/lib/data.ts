@@ -50,7 +50,13 @@ export async function getMovie(id: ObjectId) {
 
   if (!movie) return JSON.stringify({ error: 404, message: "no movie found" });
   const relatedMovies = await getRelatedMovies(connection, movie);
-  const data: movie = { ...movie, comments, recommendations: relatedMovies };
+  const tmdbId = await getTMDBId(movie.imdb.id);
+  const data: movie = {
+    ...movie,
+    comments,
+    recommendations: relatedMovies,
+    tmdbId,
+  };
 
   return JSON.stringify(data);
 }
@@ -159,4 +165,18 @@ export async function getTMDBMovie(id: string) {
   const response = await fetch(url, options);
   const data = await response.json();
   return JSON.stringify(data);
+}
+
+async function getTMDBId(ImdbId: number) {
+  const url = `https://api.themoviedb.org/3/find/tt${ImdbId}?external_source=imdb_id`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: TMDBAuthorization,
+    },
+  };
+  const response = await fetch(url, options);
+  const data = await response.json();
+  return data.movie_results[0]?.id;
 }

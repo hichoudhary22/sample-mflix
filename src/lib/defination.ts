@@ -75,6 +75,7 @@ export interface TMDBMovie {
 }
 
 export interface movie {
+  tmdbId: number;
   _id: ObjectId;
   plot: string;
   genres: Array<string>;

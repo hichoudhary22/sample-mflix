@@ -5,6 +5,7 @@ import TextPill from "@/ui/movie/textPill";
 import MovieCard from "@/ui/movies/movieCard";
 import { ObjectId } from "mongodb";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Movie({ params }: { params: { id: ObjectId } }) {
   const id = params.id;
@@ -19,13 +20,21 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
   return (
     <main>
       {/* name, year and runtime */}
-      <section>
-        <div className="my-6">
+      <section className="my-6 flex justify-between">
+        <div>
           <h1 className="text-2xl sm:text-4xl">{movie.title}</h1>
           <p>
             {movie.year} &#183; {toHHMM(movie.runtime)}
           </p>
         </div>
+        {movie.tmdbId && (
+          <Link href={`/movie/TMDB/${movie.tmdbId}`}>
+            <div className="rounded-bl-full bg-yellow-400 py-3 ps-2">
+              <p className="text-end leading-[0.75] underline">TMDB</p>
+              <p className="text-end text-xs font-thin leading-[0.75]">page</p>
+            </div>
+          </Link>
+        )}
       </section>
       {/* photo, geners and full plot */}
       <section className="my-4 grid gap-6 sm:grid-cols-[1fr,3fr]">
