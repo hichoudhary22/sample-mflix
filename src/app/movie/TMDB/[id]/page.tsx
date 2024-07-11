@@ -131,7 +131,7 @@ export default async function TMDBMovieDetailsPage({
                 <span>{readableDate(review.created_at)}</span>
               </p>
               <hr />
-              <p className="max-h-[450px] min-h-fit overflow-y-scroll text-justify">
+              <p className="max-h-[450px] min-h-[150px] overflow-y-scroll text-justify">
                 {review.content}
               </p>
             </div>
