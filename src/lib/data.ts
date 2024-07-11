@@ -67,7 +67,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
     .db("sample_mflix")
     .collection<movie>("movies");
 
-  movie.cast.map((cast) =>
+  movie.cast?.map((cast) =>
     relatedMoviesPromise.push(
       movieCollection
         .find({ cast })
@@ -76,7 +76,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
         .toArray(),
     ),
   );
-  movie.directors.map((director) =>
+  movie.directors?.map((director) =>
     relatedMoviesPromise.push(
       movieCollection
         .find({ directors: director })
@@ -85,7 +85,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
         .toArray(),
     ),
   );
-  movie.writers.map((writer) =>
+  movie.writers?.map((writer) =>
     relatedMoviesPromise.push(
       movieCollection
         .find({ writers: writer })
@@ -94,7 +94,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
         .toArray(),
     ),
   );
-  movie.languages.map((language) =>
+  movie.languages?.map((language) =>
     relatedMoviesPromise.push(
       movieCollection
         .find({ languages: language })
