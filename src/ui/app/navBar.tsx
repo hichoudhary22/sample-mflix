@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Button from "../movie/button";
 import SearchPopup from "./searchPopup";
 
 export default function NavBar() {
@@ -13,7 +12,6 @@ export default function NavBar() {
         </Link>
         <div className="flex gap-2">
           <SearchPopup />
-          <button>login</button>
         </div>
       </div>
       <hr />

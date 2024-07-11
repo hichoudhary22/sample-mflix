@@ -120,6 +120,8 @@ export interface movie {
   };
   countries: Array<string>;
   type: "movie" | "series";
+  comments: Array<{ _id: string; name: string; date: Date; text: string }>;
+  recommendations: Array<movie>;
 }
 
 export interface comment {
