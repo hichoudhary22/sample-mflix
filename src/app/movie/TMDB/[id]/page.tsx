@@ -12,6 +12,7 @@ export default async function TMDBMovieDetailsPage({
 }) {
   const response = await getTMDBMovie(params.id);
   const TMDB_Movie: TMDBMovie = JSON.parse(response);
+  console.log(TMDB_Movie.credits);
   return (
     <main>
       {/* name, year and runtime */}
@@ -80,18 +81,24 @@ export default async function TMDBMovieDetailsPage({
         <div className="flex gap-3 overflow-scroll">
           {TMDB_Movie.credits.cast?.map((cast) => (
             <div key={cast.id} className="rounded-md border">
-              <Image
-                height={80}
-                width={80}
-                alt="cast profile"
-                src={`https://image.tmdb.org/t/p/w200/${cast.profile_path}`}
-                style={{
-                  minWidth: "150px",
-                  height: "auto",
-                  borderRadius: "6px 6px 0 0",
-                }}
-              />
-              <p className="p-2 text-sm">
+              <div className="flex h-[225px] w-[150px] items-center bg-white">
+                <Image
+                  width={80}
+                  height={80}
+                  alt="cast profile"
+                  src={
+                    cast.profile_path
+                      ? `https://image.tmdb.org/t/p/w200/${cast.profile_path}`
+                      : "/person.png"
+                  }
+                  style={{
+                    width: "150px",
+                    height: "auto",
+                    borderRadius: "6px 6px 0 0",
+                  }}
+                />
+              </div>
+              <p className="border-t p-1 text-sm">
                 <span className="block font-bold">{cast.name}</span>
                 <span className="line-clamp-2 overflow-scroll font-thin">
                   {cast.character}
