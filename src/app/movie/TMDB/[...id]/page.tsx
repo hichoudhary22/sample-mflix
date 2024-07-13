@@ -8,11 +8,11 @@ import Image from "next/image";
 export default async function TMDBMovieDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: { id: Array<string> };
 }) {
-  const response = await getTMDBMovie(params.id);
+  const response = await getTMDBMovie(params.id[0], params.id[1]);
   const TMDB_Movie: TMDBMovie = JSON.parse(response);
-  console.log(TMDB_Movie.credits);
+  console.log(TMDB_Movie);
   return (
     <main>
       {/* name, year and runtime */}

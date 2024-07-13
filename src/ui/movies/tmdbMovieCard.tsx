@@ -1,11 +1,10 @@
-import { movie, TMDBMovie } from "@/lib/defination";
+import { TMDBMovie } from "@/lib/defination";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function TMDBMovieCard({ movie }: { movie: TMDBMovie }) {
-  // const movie: movie = JSON.parse(mov);
   return (
-    <Link href={`/movie/TMDB/${movie.id}`}>
+    <Link href={`/movie/TMDB/${movie.id}/${movie.media_type}`}>
       <div className="relative aspect-[2/3] min-w-[150px] max-w-[230px] transition-all hover:z-10 hover:scale-110">
         <Image
           fill

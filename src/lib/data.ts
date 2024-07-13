@@ -140,7 +140,8 @@ export async function searchMovies({
 }
 
 export async function searchTMDB(query: string, page: number) {
-  const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=true&page=${page}&sort_by=primary_release_date.desc`;
+  const url = `https://api.themoviedb.org/3/search/multi?query=${query}&include_adult=false&page=${page}&sort_by=primary_release_date.asc`;
+  // const url = `https://api.themoviedb.org/3/discover/movie?query=${query}&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`;
   const options = {
     method: "GET",
     headers: {
@@ -153,8 +154,8 @@ export async function searchTMDB(query: string, page: number) {
   return JSON.stringify(data);
 }
 
-export async function getTMDBMovie(id: string) {
-  const url = `https://api.themoviedb.org/3/movie/${id}?append_to_response=credits%2Creviews%2Crecommendations&language=en-US`;
+export async function getTMDBMovie(id: string, type: string) {
+  const url = `https://api.themoviedb.org/3/${type}/${id}?append_to_response=credits%2Creviews%2Crecommendations&language=en-US`;
   const options = {
     method: "GET",
     headers: {

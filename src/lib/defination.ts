@@ -16,6 +16,7 @@ export interface TMDBQueryResult {
 
 export interface TMDBMovie {
   adult: boolean;
+  media_type: string;
   backdrop_path: string;
   genre_ids: Array<number>;
   id: number;
