@@ -25,10 +25,15 @@ export default async function TMDBMovieDetailsPage({
       <section className="my-4 grid gap-6 sm:grid-cols-[1fr,3fr]">
         <div className="relative aspect-[2/3] min-w-[200px] max-w-[400px]">
           <Image
-            src={`https://image.tmdb.org/t/p/original${TMDB_Movie.poster_path}`}
+            src={
+              TMDB_Movie.poster_path
+                ? `https://image.tmdb.org/t/p/original${TMDB_Movie.poster_path}`
+                : "/movie.svg"
+            }
             alt="movie poster"
             fill
             sizes="100vw"
+            priority={true}
           />
         </div>
         {/* genres */}
@@ -58,7 +63,11 @@ export default async function TMDBMovieDetailsPage({
                 height={80}
                 width={80}
                 alt="image icon"
-                src={`https://image.tmdb.org/t/p/w200/${com.logo_path}`}
+                src={
+                  com.logo_path
+                    ? `https://image.tmdb.org/t/p/w200/${com.logo_path}`
+                    : "/production_company.png"
+                }
                 style={{
                   height: "60px",
                   maxWidth: "200px",

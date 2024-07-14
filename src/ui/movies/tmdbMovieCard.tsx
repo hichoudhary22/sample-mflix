@@ -8,7 +8,12 @@ export default function TMDBMovieCard({ movie }: { movie: TMDBMovie }) {
       <div className="relative aspect-[2/3] min-w-[150px] max-w-[230px] transition-all hover:z-10 hover:scale-110">
         <Image
           fill
-          src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+          priority={false}
+          src={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+              : "/movie.svg"
+          }
           alt="movie image"
           sizes="40vw"
           style={{

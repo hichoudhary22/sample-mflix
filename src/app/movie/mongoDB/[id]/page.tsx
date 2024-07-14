@@ -39,7 +39,13 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
       {/* photo, geners and full plot */}
       <section className="my-4 grid gap-6 sm:grid-cols-[1fr,3fr]">
         <div className="relative aspect-[2/3] min-w-[200px] max-w-[400px]">
-          <Image src={movie.poster} alt="movie poster" fill sizes="100vw" />
+          <Image
+            src={movie.poster ? movie.poster : "/movie.svg"}
+            alt="movie poster"
+            fill
+            sizes="100vw"
+            priority={true}
+          />
         </div>
         {/* genres & full-plot */}
         <div>
