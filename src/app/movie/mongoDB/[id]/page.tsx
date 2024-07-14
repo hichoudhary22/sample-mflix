@@ -11,7 +11,7 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
   const id = params.id;
   const response = await getMovie(id);
   const movie: movie = JSON.parse(response);
-
+  console.log(movie);
   if (!movie) {
     console.log(movie);
     return <div>no movie found</div>;
@@ -28,7 +28,7 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
           </p>
         </div>
         {movie.tmdbId && (
-          <Link href={`/movie/TMDB/${movie.tmdbId}`}>
+          <Link href={`/movie/TMDB/${movie.tmdbId}/${movie.type}`}>
             <div className="rounded-bl-full bg-yellow-400 py-3 ps-2">
               <p className="text-end leading-[0.75] underline">TMDB</p>
               <p className="text-end text-xs font-thin leading-[0.75]">page</p>

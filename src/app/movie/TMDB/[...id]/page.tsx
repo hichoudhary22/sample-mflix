@@ -12,7 +12,6 @@ export default async function TMDBMovieDetailsPage({
 }) {
   const response = await getTMDBMovie(params.id[0], params.id[1]);
   const TMDB_Movie: TMDBMovie = JSON.parse(response);
-  console.log(TMDB_Movie);
   return (
     <main>
       {/* name, year and runtime */}
