@@ -154,8 +154,8 @@ export async function searchTMDB(query: string, page: number) {
   return JSON.stringify(data);
 }
 
-export async function getTMDBMovie(id: string, type: string) {
-  const url = `https://api.themoviedb.org/3/${type}/${id}?append_to_response=credits%2Creviews%2Crecommendations&language=en-US`;
+export async function getTMDBMovie(type: string, id: string) {
+  const url = `https://api.themoviedb.org/3/${type}/${id}?append_to_response=videos%2Ccredits%2Creviews%2Crecommendations&language=en-US`;
   const options = {
     method: "GET",
     headers: {

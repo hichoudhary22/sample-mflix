@@ -12,6 +12,7 @@ export default async function TMDBMovieDetailsPage({
 }) {
   const response = await getTMDBMovie(params.id[0], params.id[1]);
   const TMDB_Movie: TMDBMovie = JSON.parse(response);
+  // console.log(TMDB_Movie.videos.results);
   return (
     <main>
       {/* name, year and runtime */}
@@ -130,6 +131,25 @@ export default async function TMDBMovieDetailsPage({
           ))}
         </div>
       </section>
+      {/* video panel */}
+      {TMDB_Movie.videos.results && (
+        <section className="flex gap-2 overflow-scroll">
+          {TMDB_Movie.videos.results.map((video) => {
+            if (video.type === "Trailer")
+              return (
+                <div key={video.key}>
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.key}`}
+                    allowFullScreen
+                    loading="lazy"
+                    className="sm:h-[250px] sm:w-[375px] md:h-[400px] md:w-[600px]"
+                    // sandbox="allow-scripts"
+                  />
+                </div>
+              );
+          })}
+        </section>
+      )}
       {/* reviews */}
       <section>
         <p className="font-semibold">Reviews :</p>

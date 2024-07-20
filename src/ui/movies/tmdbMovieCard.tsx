@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function TMDBMovieCard({ movie }: { movie: TMDBMovie }) {
   return (
-    <Link href={`/movie/TMDB/${movie.id}/${movie.media_type}`}>
+    <Link href={`/movie/TMDB/${movie.media_type}/${movie.id}`}>
       <div className="relative aspect-[2/3] min-w-[150px] max-w-[230px] transition-all hover:z-10 hover:scale-110">
         <Image
           fill

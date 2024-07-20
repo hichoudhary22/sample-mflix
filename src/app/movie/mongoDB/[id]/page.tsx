@@ -28,7 +28,7 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
           </p>
         </div>
         {movie.tmdbId && (
-          <Link href={`/movie/TMDB/${movie.tmdbId}/${movie.type}`}>
+          <Link href={`/movie/TMDB/${movie.type}/${movie.tmdbId}`}>
             <div className="rounded-bl-full bg-yellow-400 py-3 ps-2">
               <p className="text-end leading-[0.75] underline">TMDB</p>
               <p className="text-end text-xs font-thin leading-[0.75]">page</p>
