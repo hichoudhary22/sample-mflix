@@ -10,7 +10,6 @@ export default function SearchedMoviesItem({
   mov: movie;
   setShowSearchPanel: Function;
 }) {
-  console.log(mov);
   return (
     mov.poster && (
       <Link href={`/movie/mongoDB/${mov._id}`}>
