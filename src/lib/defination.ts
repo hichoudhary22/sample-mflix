@@ -1,5 +1,3 @@
-// import { ObjectId } from "mongodb";
-
 import { ObjectId } from "mongodb";
 
 export interface mongoDBQueryResult {
@@ -88,29 +86,46 @@ export interface TMDBMovie {
       id: string;
     }>;
   };
+  images: {
+    backdrops: [
+      {
+        aspect_ratio: number;
+        height: number;
+        iso_639_1: string;
+        file_path: string;
+        vote_average: number;
+        vote_count: number;
+        width: number;
+      },
+    ];
+    id: number;
+    posters: [
+      {
+        aspect_ratio: number;
+        height: number;
+        iso_639_1: string;
+        file_path: string;
+        vote_average: number;
+        vote_count: number;
+        width: number;
+      },
+    ];
+    logos: [
+      {
+        aspect_ratio: number;
+        height: number;
+        iso_639_1: string;
+        file_path: string;
+        vote_average: number;
+        vote_count: number;
+        width: number;
+      },
+    ];
+  };
 }
 
 export interface movie {
   tmdbId: number;
-  /* 
-  {
-      backdrop_path: '/jAXel5sHK1bnv9lL1U4HOkdxuD9.jpg',
-      id: 487186,
-      title: 'Halo: Nightfall',
-      original_title: 'Halo: Nightfall',
-      overview: 'Set between the events of Halo 4 and Halo 5: Guardians… Halo: Nightfall tells the dramatic story of legendary man hunter and Naval Intelligence Officer Jameson Locke and his team as they are caught in a horrific biological attack while investigating terrorist activity on the distant colony world of Sedra. As they unravel a plot that draws them to an ancient, hellish artifact, they will be forced to fight for their survival, question everything and ultimately choose between their loyalty and their lives.',
-      poster_path: '/liLQ8EFzHN06eFZ9KQMDK6cmGaK.jpg',
-      media_type: 'movie',
-      adult: false,
-      original_language: 'en',
-      genre_ids: [Array],
-      popularity: 22.04,
-      release_date: '2014-02-05',
-      video: false,
-      vote_average: 6.881,
-      vote_count: 159
-    }
-  */
   _id: ObjectId;
   plot: string;
   genres: Array<string>;
@@ -166,12 +181,3 @@ export interface comment {
   date: Date;
   text: string;
 }
-
-// export class movie {
-//   constructor(
-//     public _id: ObjectId,
-//     public title: string,
-//     public poster: string,
-//     public released: number
-//   ) {}
-// }
