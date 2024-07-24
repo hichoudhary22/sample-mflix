@@ -73,55 +73,37 @@ export interface TMDBMovie {
     results: Array<TMDBMovie>;
   };
   videos: {
-    results: Array<{
-      iso_639_1: string;
-      iso_3166_1: string;
-      name: string;
-      key: string;
-      site: string;
-      size: number;
-      type: string;
-      official: boolean;
-      published_at: string;
-      id: string;
-    }>;
+    results: Array<vidObj>;
   };
   images: {
-    backdrops: [
-      {
-        aspect_ratio: number;
-        height: number;
-        iso_639_1: string;
-        file_path: string;
-        vote_average: number;
-        vote_count: number;
-        width: number;
-      },
-    ];
+    backdrops: Array<imgObj>;
     id: number;
-    posters: [
-      {
-        aspect_ratio: number;
-        height: number;
-        iso_639_1: string;
-        file_path: string;
-        vote_average: number;
-        vote_count: number;
-        width: number;
-      },
-    ];
-    logos: [
-      {
-        aspect_ratio: number;
-        height: number;
-        iso_639_1: string;
-        file_path: string;
-        vote_average: number;
-        vote_count: number;
-        width: number;
-      },
-    ];
+    posters: Array<imgObj>;
+    logos: Array<imgObj>;
   };
+}
+
+export interface imgObj {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+
+export interface vidObj {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
 }
 
 export interface movie {

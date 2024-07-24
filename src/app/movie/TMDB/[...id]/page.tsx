@@ -91,7 +91,7 @@ export default async function TMDBMovieDetailsPage({
         <div className="flex gap-3 overflow-scroll">
           {TMDB_Movie.credits.cast?.map((cast) => (
             <div key={cast.id} className="rounded-md border">
-              <div className="flex h-[225px] w-[150px] items-center bg-white">
+              <div className="flex h-[225px] w-[150px] items-center rounded-md bg-white">
                 <Image
                   width={80}
                   height={80}
