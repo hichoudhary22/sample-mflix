@@ -28,7 +28,7 @@ export default function MediaPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
     <section>
       <p className="font-semibold">Media :</p>
       <div className="rounded-md border p-4">
-        <div className="m-2 flex gap-2">
+        <div className="m-2 flex flex-wrap gap-2">
           {mediaOptions.map((option) => (
             <button
               className={`rounded-full border px-4 py-1 capitalize ${mediaType === option && "bg-yellow-400"}`}

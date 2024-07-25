@@ -3,6 +3,7 @@ import { TMDBMovie } from "@/lib/defination";
 import { readableDate, toHHMM } from "@/lib/utils";
 import TextPill from "@/ui/movie/textPill";
 import MediaPanel from "@/ui/movie/TMDB/mediaPanel";
+import PosterPanel from "@/ui/movie/TMDB/posterPanel";
 import TMDBMovieCard from "@/ui/movies/tmdbMovieCard";
 import Image from "next/image";
 
@@ -16,45 +17,7 @@ export default async function TMDBMovieDetailsPage({
   // console.log(TMDB_Movie);
   return (
     <main>
-      {/* name, year and runtime */}
-      <section className="my-6">
-        <h1 className="text-2xl sm:text-4xl">{TMDB_Movie.title}</h1>
-        <p>
-          {TMDB_Movie.release_date} &#183; {toHHMM(TMDB_Movie.runtime)}
-        </p>
-      </section>
-      {/* poster, geners and overview */}
-      <section className="my-4 grid gap-6 sm:grid-cols-[1fr,3fr]">
-        <div className="relative aspect-[2/3] min-w-[200px] max-w-[400px]">
-          <Image
-            src={
-              TMDB_Movie.poster_path
-                ? `https://image.tmdb.org/t/p/original${TMDB_Movie.poster_path}`
-                : "/movie.svg"
-            }
-            alt="movie poster"
-            fill
-            sizes="100vw"
-            priority={true}
-          />
-        </div>
-        {/* genres */}
-        <div>
-          {TMDB_Movie.genres?.map((genre) => (
-            <TextPill key={genre.id} text={genre.name} />
-          ))}
-          <p className="overflow-scroll text-ellipsis text-justify">
-            {TMDB_Movie.overview}
-          </p>
-        </div>
-      </section>
-      {/* ratings, votes and rate this movie */}
-      <section className="my-4 text-2xl font-semibold">
-        <p>
-          <span>{TMDB_Movie.vote_average}/10 &#183;</span>
-          <span> {TMDB_Movie.vote_count} votes &#183;</span>
-        </p>
-      </section>
+      <PosterPanel TMDB_Movie={TMDB_Movie} />
       {/* production_companies */}
       <section className="my-4">
         <span className="text-xl font-semibold">Production Companies :</span>
@@ -115,20 +78,6 @@ export default async function TMDBMovieDetailsPage({
                 </span>
               </p>
             </div>
-          ))}
-        </div>
-      </section>
-      <section>
-        <div className="my-4">
-          <p className="font-semibold">Production Countries :</p>
-          {TMDB_Movie.production_countries?.map((country) => (
-            <TextPill key={country.iso_3166_1} text={country.name} />
-          ))}
-        </div>
-        <div className="my-4">
-          <p className="font-semibold">Language :</p>
-          {TMDB_Movie.spoken_languages?.map((language) => (
-            <TextPill key={language.iso_639_1} text={language.english_name} />
           ))}
         </div>
       </section>
