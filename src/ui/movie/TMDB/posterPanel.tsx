@@ -9,7 +9,7 @@ export default function PosterPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
       style={{
         backgroundImage: `url(https://image.tmdb.org/t/p/w1280${TMDB_Movie.backdrop_path})`,
       }}
-      className={`bg-slate-500 bg-cover text-white bg-blend-multiply`}
+      className={`bg-slate-500 bg-cover bg-center text-white bg-blend-multiply`}
     >
       {/* movie poster and details */}
       <section className="flex flex-col gap-6 p-4 sm:flex-row">
