@@ -13,6 +13,11 @@ export interface TMDBQueryResult {
 }
 
 export interface TMDBMovie {
+  name: string;
+  tagline: string;
+  budget: number;
+  revenue: number;
+  homepage: string;
   adult: boolean;
   media_type: string;
   backdrop_path: string;
@@ -36,6 +41,19 @@ export interface TMDBMovie {
     logo_path: string;
     name: string;
     origin_country: string;
+  }>;
+  number_of_episodes: number;
+  number_of_seasons: number;
+  first_air_date: string;
+  seasons: Array<{
+    air_date: string;
+    episode_count: number;
+    id: number;
+    name: string;
+    overview: string;
+    poster_path: string;
+    season_number: number;
+    vote_average: number;
   }>;
   spoken_languages: Array<{
     english_name: string;
