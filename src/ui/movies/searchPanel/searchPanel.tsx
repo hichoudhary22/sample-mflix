@@ -5,11 +5,9 @@ import {
   useRouter,
 } from "next/navigation";
 import { useState } from "react";
-import DropDown from "./dropDown";
-import UniqueSelectDropDown from "./uniqueSelectDropDown";
+import DropDown from "./mongo/dropDown";
+import UniqueSelectDropDown from "./mongo/uniqueSelectDropDown";
 import Image from "next/image";
-import ascending from "../../../public/ascending.svg";
-import descending from "../../../public/descending.svg";
 import SelectDB from "./selectDB";
 
 export default function SearchPanel({
@@ -35,6 +33,12 @@ export default function SearchPanel({
   const [year, setYear] = useState(searchParams.getAll("year") || [""]);
   const [sortBy, setSortBy] = useState(searchParams.get("Sort By") || "");
   const [sortOrder, setSortOrder] = useState(true);
+
+  const [queryType, setQueryType] = useState(
+    searchParams.get("queryType") || "movie",
+  );
+
+  const queryTypeOptions = ["movie", "tv"];
 
   const valOfType = ["movie", "series"];
   const valOfGenres = [
@@ -195,7 +199,7 @@ export default function SearchPanel({
             goToSearchPage={goToSearchPage}
           />
 
-          {searchedDB === "MongoDB" && (
+          {searchedDB === "MongoDB" ? (
             <div className="my-1 flex flex-wrap">
               <UniqueSelectDropDown
                 name="type"
@@ -243,11 +247,29 @@ export default function SearchPanel({
                 <Image
                   width={20}
                   height={20}
-                  src={sortOrder ? ascending : descending}
+                  src={sortOrder ? "/ascending.svg" : "/descending.svg"}
                   alt="ascending or descending"
                 />
                 {sortOrder ? "Descending" : "Ascending"}
               </button>
+            </div>
+          ) : (
+            <div className="m-4 border-t pt-2">
+              <p>Select the type of media to search for :</p>
+              <div className="flex justify-around pt-2">
+                {queryTypeOptions.map((qType, index) => (
+                  <button
+                    key={index}
+                    className={`rounded-full border px-6 py-1 text-sm uppercase ${qType === queryType && "bg-yellow-400"}`}
+                    onClick={() => {
+                      setQueryType(qType);
+                      params.set("queryType", qType);
+                    }}
+                  >
+                    {qType}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>

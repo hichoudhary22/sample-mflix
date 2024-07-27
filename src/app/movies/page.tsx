@@ -1,11 +1,12 @@
-import { getAllMovies } from "@/lib/data";
-import MovieCard from "@/ui/movies/movieCard";
+import { getAllMongoMovies } from "@/lib/mongoData";
+import MovieCard from "@/ui/app/movieCard";
+
 export default async function Movies({
   searchParams,
 }: {
   searchParams: { [key: string]: string };
 }) {
-  const allMovies = await getAllMovies(searchParams);
+  const allMovies = await getAllMongoMovies(searchParams);
   return (
     <>
       {Object.keys(searchParams)[0] && (
@@ -21,8 +22,13 @@ export default async function Movies({
         </p>
       )}
       <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-1  ">
-        {allMovies.map((movie) => (
-          <MovieCard movie={movie} key={movie._id.toString()} />
+        {allMovies.map((mov) => (
+          <MovieCard
+            key={mov._id.toString()}
+            link={`/movie/mongoDB/${mov._id}`}
+            poster={mov.poster}
+            title={mov.title}
+          />
         ))}
       </div>
     </>

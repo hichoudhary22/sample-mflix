@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { movie } from "@/lib/defination";
-import { searchMovies } from "@/lib/data";
 import SearchedMoviesItem from "./searchedMoviesItem";
 import { useDebouncedCallback } from "@/lib/clientUtils";
 import Link from "next/link";
@@ -9,16 +7,18 @@ import searchSvg from "../../../public/search.svg";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { mongoMovie } from "@/lib/defination";
+import { searchMongoMovies } from "@/lib/mongoData";
 
 export default function SearchPopup() {
   const [showSearchPanel, setShowSearchPanel] = useState(false);
-  const [searchedMovies, setSearchedMovies] = useState<movie[] | []>([]);
+  const [searchedMovies, setSearchedMovies] = useState<mongoMovie[] | []>([]);
   const [searchText, setSearchText] = useState("");
   const router = useRouter();
 
   const execSearch = useDebouncedCallback(async (searchText: string) => {
     const query = { title: { $regex: searchText, $options: "i" } };
-    const data = await searchMovies({ query, page: 1 });
+    const data = await searchMongoMovies({ query, page: 1 });
     const searchedData = await JSON.parse(data);
     setSearchedMovies(searchedData.movies);
   }, 500);

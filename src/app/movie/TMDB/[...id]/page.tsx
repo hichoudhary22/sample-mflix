@@ -1,5 +1,5 @@
-import { getTMDBMovie } from "@/lib/data";
 import { TMDBMovie } from "@/lib/defination";
+import { getTMDBMovie } from "@/lib/tmdbData";
 import CastPanel from "@/ui/movie/TMDB/castPanel";
 import MediaPanel from "@/ui/movie/TMDB/mediaPanel";
 import PosterPanel from "@/ui/movie/TMDB/posterPanel";
@@ -15,6 +15,14 @@ export default async function TMDBMovieDetailsPage({
 }) {
   const response = await getTMDBMovie(params.id[0], params.id[1]);
   const TMDB_Movie: TMDBMovie = JSON.parse(response);
+  if (TMDB_Movie.success === false)
+    return (
+      <div className="text-center">
+        <p className="text-4xl uppercase">404 not found</p>
+        <p>{TMDB_Movie.status_message}</p>
+        <p>Status Code :{TMDB_Movie.status_code}</p>
+      </div>
+    );
   return (
     <main>
       <PosterPanel TMDB_Movie={TMDB_Movie} />

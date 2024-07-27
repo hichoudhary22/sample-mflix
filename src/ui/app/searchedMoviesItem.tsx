@@ -1,13 +1,13 @@
-import { movie } from "@/lib/defination";
 import Image from "next/image";
 import Link from "next/link";
 import TextPill from "../movie/textPill";
+import { mongoMovie } from "@/lib/defination";
 
 export default function SearchedMoviesItem({
   mov,
   setShowSearchPanel,
 }: {
-  mov: movie;
+  mov: mongoMovie;
   setShowSearchPanel: Function;
 }) {
   return (

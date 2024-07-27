@@ -1,17 +1,16 @@
-import { getMovie } from "@/lib/data";
-import { movie } from "@/lib/defination";
+import { mongoMovie } from "@/lib/defination";
+import { getMongoMovie } from "@/lib/mongoData";
 import { readableDate, toHHMM } from "@/lib/utils";
+import ImageWithFallback from "@/ui/app/imgWithFallback";
+import MovieCard from "@/ui/app/movieCard";
 import TextPill from "@/ui/movie/textPill";
-import MovieCard from "@/ui/movies/movieCard";
 import { ObjectId } from "mongodb";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function Movie({ params }: { params: { id: ObjectId } }) {
   const id = params.id;
-  const response = await getMovie(id);
-  const movie: movie = JSON.parse(response);
-  console.log(movie);
+  const response = await getMongoMovie(id);
+  const movie: mongoMovie = JSON.parse(response);
   if (!movie) {
     console.log(movie);
     return <div>no movie found</div>;
@@ -39,8 +38,9 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
       {/* photo, geners and full plot */}
       <section className="my-4 grid gap-6 sm:grid-cols-[1fr,3fr]">
         <div className="relative aspect-[2/3] min-w-[200px] max-w-[400px]">
-          <Image
-            src={movie.poster ? movie.poster : "/movie.svg"}
+          <ImageWithFallback
+            src={movie.poster}
+            fallback="/movie.svg"
             alt="movie poster"
             fill
             sizes="100vw"
@@ -113,7 +113,12 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
         <p className="text-xl font-semibold underline">Recommendations :</p>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-2">
           {movie.recommendations?.map((mov) => (
-            <MovieCard movie={mov} key={mov._id.toString()} />
+            <MovieCard
+              key={mov._id.toString()}
+              link={`/movie/mongoDB/${mov._id}`}
+              poster={mov.poster}
+              title={mov.title}
+            />
           ))}
         </div>
       </section>

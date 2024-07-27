@@ -6,7 +6,6 @@ export default function SeasonsPanel({
 }: {
   TMDB_Movie: TMDBMovie;
 }) {
-  console.log(TMDB_Movie.seasons);
   return (
     <section className="my-4">
       <span className="text-xl font-semibold">Seasons :</span>
@@ -29,7 +28,7 @@ export default function SeasonsPanel({
             <p className="border-t p-1 text-sm">
               <span className="block font-bold">{season.name}</span>
               <span className="line-clamp-2 overflow-scroll font-thin">
-                {season.episode_count}
+                {season.episode_count} Episodes
               </span>
             </p>
           </div>

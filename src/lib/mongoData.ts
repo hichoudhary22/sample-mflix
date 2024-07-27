@@ -1,22 +1,22 @@
 "use server";
 import connectionPromise from "@/lib/mongodb";
 import { MongoClient, ObjectId, WithId } from "mongodb";
-import { movie, comment } from "./defination";
-import fetch from "node-fetch";
+import { mongoMovie, comment } from "./defination";
+import { getTMDBId } from "./tmdbData";
 
-const TMDBAuthorization = process.env.TMDB_AUTHORIZATION as string;
-
-export async function getAllMovies(
+export async function getAllMongoMovies(
   query: { [key: string]: string },
   limit?: number,
 ) {
   const connection = await connectionPromise;
-  const collection = connection.db("sample_mflix").collection<movie>("movies");
+  const collection = connection
+    .db("sample_mflix")
+    .collection<mongoMovie>("movies");
   const movies = await collection
     .find(query)
     .sort({ released: -1 })
     .limit(limit || 50)
-    .project<movie>({
+    .project<mongoMovie>({
       _id: 1,
       title: 1,
       poster: 1,
@@ -30,13 +30,15 @@ export async function getAllMovies(
   return movies;
 }
 
-export async function getMovie(id: ObjectId) {
+export async function getMongoMovie(id: ObjectId) {
   const connection = await connectionPromise;
 
   const movieCollection = connection
     .db("sample_mflix")
-    .collection<movie>("movies");
-  const movie = await movieCollection.findOne<movie>({ _id: new ObjectId(id) });
+    .collection<mongoMovie>("movies");
+  const movie = await movieCollection.findOne<mongoMovie>({
+    _id: new ObjectId(id),
+  });
 
   const commentsCollection = connection
     .db("sample_mflix")
@@ -49,9 +51,9 @@ export async function getMovie(id: ObjectId) {
     .toArray();
 
   if (!movie) return JSON.stringify({ error: 404, message: "no movie found" });
-  const relatedMovies = await getRelatedMovies(connection, movie);
+  const relatedMovies = await getRelatedMongoMovies(connection, movie);
   const tmdbId = await getTMDBId(movie.imdb.id);
-  const data: movie = {
+  const data: mongoMovie = {
     ...movie,
     comments,
     recommendations: relatedMovies,
@@ -61,18 +63,21 @@ export async function getMovie(id: ObjectId) {
   return JSON.stringify(data);
 }
 
-async function getRelatedMovies(connection: MongoClient, movie: movie) {
-  const relatedMoviesPromise: Array<Promise<WithId<movie>[]>> = [];
+async function getRelatedMongoMovies(
+  connection: MongoClient,
+  movie: mongoMovie,
+) {
+  const relatedMoviesPromise: Array<Promise<WithId<mongoMovie>[]>> = [];
   const movieCollection = connection
     .db("sample_mflix")
-    .collection<movie>("movies");
+    .collection<mongoMovie>("movies");
 
   movie.cast?.map((cast) =>
     relatedMoviesPromise.push(
       movieCollection
         .find({ cast })
         .limit(5)
-        .project<movie>({ title: 1, poster: 1 })
+        .project<mongoMovie>({ title: 1, poster: 1 })
         .toArray(),
     ),
   );
@@ -81,7 +86,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
       movieCollection
         .find({ directors: director })
         .limit(5)
-        .project<movie>({ title: 1, poster: 1 })
+        .project<mongoMovie>({ title: 1, poster: 1 })
         .toArray(),
     ),
   );
@@ -90,7 +95,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
       movieCollection
         .find({ writers: writer })
         .limit(5)
-        .project<movie>({ title: 1, poster: 1 })
+        .project<mongoMovie>({ title: 1, poster: 1 })
         .toArray(),
     ),
   );
@@ -99,7 +104,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
       movieCollection
         .find({ languages: language })
         .limit(10)
-        .project<movie>({ title: 1, poster: 1 })
+        .project<mongoMovie>({ title: 1, poster: 1 })
         .toArray(),
     ),
   );
@@ -112,7 +117,7 @@ async function getRelatedMovies(connection: MongoClient, movie: movie) {
   return uniqueRelatedMovies;
 }
 
-export async function searchMovies({
+export async function searchMongoMovies({
   query,
   limit,
   page,
@@ -137,47 +142,4 @@ export async function searchMovies({
   const noOfMovies = await collection.countDocuments(query);
   const data = JSON.stringify({ movies, noOfMovies });
   return data;
-}
-
-export async function searchTMDB(query: string, page: number) {
-  const url = `https://api.themoviedb.org/3/search/multi?query=${query}&include_adult=false&page=${page}&sort_by=primary_release_date.asc`;
-  // const url = `https://api.themoviedb.org/3/discover/movie?query=${query}&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`;
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: TMDBAuthorization,
-    },
-  };
-  const response = await fetch(url, options);
-  const data = await response.json();
-  return JSON.stringify(data);
-}
-
-export async function getTMDBMovie(type: string, id: string) {
-  const url = `https://api.themoviedb.org/3/${type}/${id}?append_to_response=images%2Cvideos%2Ccredits%2Creviews%2Crecommendations&language=en-US%2Cnull%2Cen`;
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: TMDBAuthorization,
-    },
-  };
-  const response = await fetch(url, options);
-  const data = await response.json();
-  return JSON.stringify(data);
-}
-
-async function getTMDBId(ImdbId: number) {
-  const url = `https://api.themoviedb.org/3/find/tt${ImdbId}?external_source=imdb_id`;
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: TMDBAuthorization,
-    },
-  };
-  const response = await fetch(url, options);
-  const data = await response.json();
-  return data?.movie_results[0]?.id;
 }

@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export interface mongoDBQueryResult {
-  movies: Array<movie>;
+  movies: Array<mongoMovie>;
   noOfMovies: number;
 }
 
@@ -13,6 +13,10 @@ export interface TMDBQueryResult {
 }
 
 export interface TMDBMovie {
+  success: boolean;
+  status_code: number;
+  status_message: string;
+
   name: string;
   tagline: string;
   budget: number;
@@ -124,7 +128,7 @@ export interface vidObj {
   id: string;
 }
 
-export interface movie {
+export interface mongoMovie {
   tmdbId: number;
   _id: ObjectId;
   plot: string;
@@ -172,7 +176,7 @@ export interface movie {
   countries: Array<string>;
   type: "movie" | "series";
   comments: Array<{ _id: string; name: string; date: Date; text: string }>;
-  recommendations: Array<movie>;
+  recommendations: Array<mongoMovie>;
 }
 
 export interface comment {

@@ -1,11 +1,15 @@
 "use client";
-import { searchMovies, searchTMDB } from "@/lib/data";
-import { movie, mongoDBQueryResult, TMDBQueryResult } from "@/lib/defination";
-import MongoDBResultPanel from "@/ui/movies/mongoDBResultPanel";
-import MovieCard from "@/ui/movies/movieCard";
-import Paginate from "@/ui/movies/paginate";
-import SearchPanel from "@/ui/movies/searchPanel";
-import TMDBQueryResultPanel from "@/ui/movies/tmdbQueryResultPanel";
+import {
+  mongoDBQueryResult,
+  mongoMovie,
+  TMDBMovie,
+  TMDBQueryResult,
+} from "@/lib/defination";
+import { searchMongoMovies } from "@/lib/mongoData";
+import { searchTMDB } from "@/lib/tmdbData";
+import MovieCard from "@/ui/app/movieCard";
+import Paginate from "@/ui/movies/searchPanel/paginate";
+import SearchPanel from "@/ui/movies/searchPanel/searchPanel";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
@@ -22,6 +26,8 @@ function SuspendedElement() {
     useState<mongoDBQueryResult>();
   const [TMDBQueryResult, setTMDBQueryResult] = useState<TMDBQueryResult>();
 
+  const [loading, setLoading] = useState(false);
+
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
 
@@ -34,8 +40,8 @@ function SuspendedElement() {
   );
 
   useEffect(() => {
-    // title type genres countries year test
     (async () => {
+      setLoading(true);
       setActivePage(Number(searchParams.get("page") || 1));
 
       const title = searchParams.get("title") || "";
@@ -48,6 +54,9 @@ function SuspendedElement() {
         searchParams.get("Sort By") &&
         formatSortBy(searchParams.get("Sort By"));
       setSearchedDB(searchParams.get("searchedDB") || "MongoDB");
+
+      const queryType = searchParams.get("queryType") || "movie";
+
       const query = {
         ...(title && { title: { $regex: title, $options: "i" } }),
         // ...(title && { $text: { $search: { text: title, path: "title" } } }),
@@ -63,39 +72,76 @@ function SuspendedElement() {
         page: activePage,
         ...(sortBy && { sortBy }),
         ...(sortOrder && { sortOrder }),
-        // ...(searchedDB && { searchedDB }),
       };
 
       const data =
         searchedDB === "MongoDB"
-          ? await searchMovies(req)
-          : await searchTMDB(title, activePage);
+          ? await searchMongoMovies(req)
+          : await searchTMDB(title, activePage, queryType);
+
       const searchResult = JSON.parse(data);
 
       searchedDB === "MongoDB"
         ? setMongoDBQueryResult(searchResult)
         : setTMDBQueryResult(searchResult);
+
+      setLoading(false);
     })();
   }, [searchParams, activePage, searchedDB]);
+
+  const noOfMovies =
+    searchedDB === "MongoDB"
+      ? mongoDBQueryResult?.noOfMovies
+      : TMDBQueryResult?.total_results;
 
   return (
     <div className="gap-2">
       <SearchPanel searchParams={searchParams} params={params} />
-      {searchedDB === "MongoDB" && mongoDBQueryResult && (
-        <MongoDBResultPanel
-          params={params}
-          activePage={activePage}
-          setActivePage={setActivePage}
-          mongoDBQueryResult={mongoDBQueryResult}
-        />
-      )}
-      {searchedDB === "TMDB" && TMDBQueryResult && (
-        <TMDBQueryResultPanel
-          TMDBQueryResult={TMDBQueryResult}
-          activePage={activePage}
-          setActivePage={setActivePage}
-          params={params}
-        />
+      {loading ? (
+        <p className="my-[150px] text-center text-4xl uppercase">
+          ...loading the movies
+        </p>
+      ) : (
+        <>
+          <Paginate
+            params={params}
+            activePage={activePage}
+            noOfMovies={noOfMovies}
+          />
+          <div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(150px,auto))] gap-1">
+            {searchedDB === "MongoDB" &&
+              mongoDBQueryResult?.movies.map((mov: mongoMovie) => (
+                <MovieCard
+                  key={mov._id.toString()}
+                  link={`/movie/mongoDB/${mov._id}`}
+                  poster={mov.poster}
+                  title={mov.title}
+                />
+              ))}
+            {searchedDB === "TMDB" &&
+              TMDBQueryResult?.results.map((mov: TMDBMovie) => (
+                <MovieCard
+                  key={mov.id}
+                  link={`/movie/TMDB/${params.get("queryType") || "movie"}/${mov.id}`}
+                  poster={`https://image.tmdb.org/t/p/w154/${mov.poster_path}`}
+                  title={mov.title || mov.name}
+                />
+              ))}
+          </div>
+          {noOfMovies === 0 && (
+            <p className="my-[150px] text-center text-4xl uppercase">
+              {" "}
+              no movie found!!!
+            </p>
+          )}
+          {noOfMovies !== undefined && noOfMovies > 20 && (
+            <Paginate
+              params={params}
+              activePage={activePage}
+              noOfMovies={noOfMovies}
+            />
+          )}
+        </>
       )}
     </div>
   );

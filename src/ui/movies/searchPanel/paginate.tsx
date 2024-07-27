@@ -1,34 +1,31 @@
 import { usePathname, useRouter } from "next/navigation";
 
-import { useEffect } from "react";
-
 export default function Paginate({
   noOfMovies,
   params,
   activePage,
-  setActivePage,
 }: {
   noOfMovies?: number;
   params: URLSearchParams;
   activePage: number;
-  setActivePage: Function;
 }) {
   const pathName = usePathname();
   const router = useRouter();
-
   const noOfPages = noOfMovies ? Math.ceil(noOfMovies / 20) : 1;
-
-  // useEffect(() => {
-  //   params.set("page", `${activePage}`);
-  //   router.push(`${pathName}?${params.toString()}`);
-  // }, [activePage, pathName, router]);
 
   function pageChange(num: number) {
     params.set("page", `${num}`);
     router.push(`${pathName}?${params.toString()}`);
   }
 
-  if (noOfPages < 2) return <p>Showing all movies</p>;
+  if (noOfMovies === 0) return null;
+
+  if (noOfPages < 2)
+    return (
+      <p className="m-6 rounded-full border bg-yellow-400 text-center uppercase">
+        Showing all the movies
+      </p>
+    );
 
   return (
     <div className="my-2">

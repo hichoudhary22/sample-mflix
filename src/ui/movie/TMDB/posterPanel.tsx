@@ -1,8 +1,8 @@
 import { TMDBMovie } from "@/lib/defination";
 import { toHHMM } from "@/lib/utils";
-import Image from "next/image";
 import TextPill from "../textPill";
 import Link from "next/link";
+import ImageWithFallback from "@/ui/app/imgWithFallback";
 
 export default function PosterPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
   return (
@@ -16,12 +16,9 @@ export default function PosterPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
       <section className="flex flex-col gap-6 p-4 sm:flex-row">
         {/* movie poster */}
         <div className="w-1/2 self-center sm:w-1/3">
-          <Image
-            src={
-              TMDB_Movie.poster_path
-                ? `https://image.tmdb.org/t/p/w500${TMDB_Movie.poster_path}`
-                : "/movie.svg"
-            }
+          <ImageWithFallback
+            src={`https://image.tmdb.org/t/p/w500${TMDB_Movie.poster_path}`}
+            fallback="/movie.svg"
             alt="movie poster"
             width={10}
             height={10}
@@ -40,7 +37,7 @@ export default function PosterPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
             {TMDB_Movie.runtime && toHHMM(TMDB_Movie.runtime)}
           </p>
           <p>
-            <span>{TMDB_Movie.vote_average.toFixed(1)}/10 &#183;</span>
+            <span>{TMDB_Movie.vote_average?.toFixed(1)}/10 &#183;</span>
             <span> {TMDB_Movie.vote_count} votes</span>
           </p>
           {TMDB_Movie.genres?.map((genre) => (
@@ -59,7 +56,7 @@ export default function PosterPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
             <p className="font-semibold">Countries</p>
             <p className="mx-2 font-semibold">:</p>
             <p className="font-normal">
-              {TMDB_Movie.production_countries.reduce(
+              {TMDB_Movie.production_countries?.reduce(
                 (accumulator, countryObj) =>
                   accumulator
                     ? accumulator + ", " + countryObj.name
@@ -71,7 +68,7 @@ export default function PosterPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
             <p className="font-semibold">Languages</p>
             <p className="mx-2 font-semibold">:</p>
             <p className="font-normal">
-              {TMDB_Movie.spoken_languages.reduce(
+              {TMDB_Movie.spoken_languages?.reduce(
                 (accumulator, langObj) =>
                   accumulator
                     ? accumulator + ", " + langObj.english_name

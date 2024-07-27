@@ -10,7 +10,7 @@ export default function ReviewsPanel({
     <section>
       <p className="font-semibold">Reviews :</p>
       <div className="flex overflow-x-scroll">
-        {TMDB_Movie.reviews.results?.map((review) => (
+        {TMDB_Movie.reviews?.results?.map((review) => (
           <div
             key={review.id}
             className="m-1  min-w-[325px]  rounded-md border p-3"
