@@ -1,14 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import SearchedMoviesItem from "./searchedMoviesItem";
 import { useDebouncedCallback } from "@/lib/clientUtils";
 import Link from "next/link";
-import searchSvg from "../../../public/search.svg";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { mongoMovie } from "@/lib/defination";
 import { searchMongoMovies } from "@/lib/mongoData";
+import SearchPopupMoviesItem from "./searchPopupMoviesItem";
 
 export default function SearchPopup() {
   const [showSearchPanel, setShowSearchPanel] = useState(false);
@@ -39,7 +37,7 @@ export default function SearchPopup() {
         alt="search icon"
         width={40}
         height={40}
-        src={searchSvg}
+        src={"/search.svg"}
         onClick={() => setShowSearchPanel(true)}
         className="m-1 h-fit self-center rounded-full bg-black p-3"
       />
@@ -82,7 +80,7 @@ export default function SearchPopup() {
             <div className="max-h-[400px] overflow-scroll">
               {searchedMovies.length > 0 &&
                 searchedMovies?.map((mov) => (
-                  <SearchedMoviesItem
+                  <SearchPopupMoviesItem
                     key={mov._id.toString()}
                     mov={mov}
                     setShowSearchPanel={setShowSearchPanel}

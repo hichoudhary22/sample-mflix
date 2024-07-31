@@ -3,7 +3,7 @@ import Link from "next/link";
 import TextPill from "../movie/textPill";
 import { mongoMovie } from "@/lib/defination";
 
-export default function SearchedMoviesItem({
+export default function SearchPopupMoviesItem({
   mov,
   setShowSearchPanel,
 }: {

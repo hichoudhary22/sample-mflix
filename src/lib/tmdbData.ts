@@ -36,7 +36,8 @@ export async function getTMDBMovie(type: string, id: string) {
 }
 
 export async function getTMDBId(ImdbId: number) {
-  const url = `https://api.themoviedb.org/3/find/tt${ImdbId}?external_source=imdb_id`;
+  const id = String(ImdbId).padStart(7, "0");
+  const url = `https://api.themoviedb.org/3/find/tt${id}?external_source=imdb_id`;
   const options = {
     method: "GET",
     headers: {

@@ -32,7 +32,7 @@ function MongoPosterPanel({ movie }: { movie: mongoMovie }) {
         <div className="w-1/2 self-center sm:w-1/3">
           <ImageWithFallback
             src={movie.poster}
-            fallback="/movie.svg"
+            fallback={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
             alt="movie poster"
             width={10}
             height={10}

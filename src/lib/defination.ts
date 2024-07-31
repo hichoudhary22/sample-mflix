@@ -131,6 +131,7 @@ export interface vidObj {
 export interface mongoMovie {
   id: number;
   backdrop_path: string;
+  poster_path: string;
   _id: ObjectId;
   plot: string;
   genres: Array<string>;
