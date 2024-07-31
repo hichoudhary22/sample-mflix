@@ -25,12 +25,12 @@ export default async function TMDBMovieDetailsPage({
     );
   return (
     <main>
-      <PosterPanel TMDB_Movie={TMDB_Movie} />
+      <PosterPanel tmdbMovie={TMDB_Movie} />
       {TMDB_Movie.seasons && <SeasonsPanel TMDB_Movie={TMDB_Movie} />}
       <ProductionCompaniesPanel TMDB_Movie={TMDB_Movie} />
       <CastPanel TMDB_Movie={TMDB_Movie} />
       <MediaPanel TMDB_Movie={TMDB_Movie} />
-      <ReviewsPanel TMDB_Movie={TMDB_Movie} />
+      <ReviewsPanel tmdbMovie={TMDB_Movie} />
       <RecommendationsPanel TMDB_Movie={TMDB_Movie} />
     </main>
   );

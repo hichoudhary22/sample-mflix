@@ -46,5 +46,5 @@ export async function getTMDBId(ImdbId: number) {
   };
   const response = await fetch(url, options);
   const data = await response.json();
-  return data?.movie_results[0]?.id;
+  return data?.movie_results[0];
 }

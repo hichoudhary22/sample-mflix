@@ -52,12 +52,12 @@ export async function getMongoMovie(id: ObjectId) {
 
   if (!movie) return JSON.stringify({ error: 404, message: "no movie found" });
   const relatedMovies = await getRelatedMongoMovies(connection, movie);
-  const tmdbId = await getTMDBId(movie.imdb.id);
+  const tmdbData = await getTMDBId(movie.imdb.id);
   const data: mongoMovie = {
     ...movie,
     comments,
     recommendations: relatedMovies,
-    tmdbId,
+    ...tmdbData,
   };
 
   return JSON.stringify(data);

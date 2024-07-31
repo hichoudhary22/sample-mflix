@@ -129,7 +129,8 @@ export interface vidObj {
 }
 
 export interface mongoMovie {
-  tmdbId: number;
+  id: number;
+  backdrop_path: string;
   _id: ObjectId;
   plot: string;
   genres: Array<string>;
@@ -140,6 +141,7 @@ export interface mongoMovie {
   num_mflix_comments: number;
   poster: string;
   title: string;
+
   tomatoes: {
     boxOffice: string;
     consensus: string;
