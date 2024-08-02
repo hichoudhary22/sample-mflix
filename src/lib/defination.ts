@@ -5,6 +5,17 @@ export interface mongoDBQueryResult {
   noOfMovies: number;
 }
 
+export interface Popular_TMDB_Movies {
+  dates: {
+    maximum: string;
+    minimum: string;
+  };
+  page: number;
+  results: Array<TMDBMovie>;
+  total_pages: number;
+  total_results: number;
+}
+
 export interface TMDBQueryResult {
   page: number;
   total_pages: number;

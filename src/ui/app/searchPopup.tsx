@@ -14,12 +14,15 @@ export default function SearchPopup() {
   const [searchText, setSearchText] = useState("");
   const router = useRouter();
 
-  const execSearch = useDebouncedCallback(async (searchText: string) => {
+  const delay = 500;
+  async function callback(searchText: string) {
     const query = { title: { $regex: searchText, $options: "i" } };
     const data = await searchMongoMovies({ query, page: 1 });
     const searchedData = await JSON.parse(data);
     setSearchedMovies(searchedData.movies);
-  }, 500);
+  }
+
+  const execSearch = useDebouncedCallback(callback, delay);
 
   useEffect(() => {
     if (showSearchPanel) execSearch(searchText);

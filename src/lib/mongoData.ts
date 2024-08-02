@@ -5,7 +5,7 @@ import { mongoMovie, comment } from "./defination";
 import { getTMDBId } from "./tmdbData";
 
 export async function getAllMongoMovies(
-  query: { [key: string]: string },
+  query?: { [key: string]: string },
   limit?: number,
 ) {
   const connection = await connectionPromise;
@@ -13,9 +13,9 @@ export async function getAllMongoMovies(
     .db("sample_mflix")
     .collection<mongoMovie>("movies");
   const movies = await collection
-    .find(query)
+    .find(query || {})
     .sort({ released: -1 })
-    .limit(limit || 50)
+    .limit(limit || 20)
     .project<mongoMovie>({
       _id: 1,
       title: 1,

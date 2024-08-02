@@ -117,7 +117,7 @@ function TabularDetails({
   secondString: string;
 }) {
   return (
-    <div className="grid grid-cols-[2fr,1fr,8fr]">
+    <div className="grid grid-cols-[4fr,2fr,8fr]">
       <p className="font-semibold">{firstString}</p>
       <p className="mx-2 font-semibold">:</p>
       <p className="font-normal">{secondString}.</p>

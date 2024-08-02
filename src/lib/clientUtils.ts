@@ -1,18 +1,20 @@
 import { RefObject, useCallback, useEffect, useRef } from "react";
 
 export function useDebouncedCallback(callback: Function, delay: number) {
+  // preserving timerId across renders via useRef.
   const timerId = useRef<NodeJS.Timeout>();
-  return useCallback(
-    (searchText: string) => {
+
+  function preservedFunction(searchText: string) {
+    clearTimeout(timerId.current);
+    timerId.current = setTimeout(later, delay);
+    function later() {
       clearTimeout(timerId.current);
-      timerId.current = setTimeout(later, delay);
-      function later() {
-        clearTimeout(timerId.current);
-        callback(searchText);
-      }
-    },
-    [callback, delay],
-  );
+      callback(searchText);
+    }
+  }
+
+  //  preserving the returned function acrosss renders via useCallback.
+  return useCallback(preservedFunction, [callback, delay]);
 }
 
 export function useOutsideClickAlert(
