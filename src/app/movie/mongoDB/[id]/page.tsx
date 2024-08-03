@@ -4,6 +4,8 @@ import PosterPanel from "@/ui/movie/TMDB/posterPanel";
 import RecommendationsPanel from "@/ui/movie/TMDB/recommendationsPanel";
 import ReviewsPanel from "@/ui/movie/TMDB/reviewsPanel";
 import { ObjectId } from "mongodb";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function Movie({ params }: { params: { id: ObjectId } }) {
   const id = params.id;
@@ -15,10 +17,12 @@ export default async function Movie({ params }: { params: { id: ObjectId } }) {
   }
 
   return (
-    <main>
-      <PosterPanel mongoMovie={movie} />
-      {movie.comments.length > 0 && <ReviewsPanel mongoMovie={movie} />}
-      <RecommendationsPanel mongoMovie={movie} />
-    </main>
+    <Suspense fallback={<Loading />}>
+      <main>
+        <PosterPanel mongoMovie={movie} />
+        {movie.comments.length > 0 && <ReviewsPanel mongoMovie={movie} />}
+        <RecommendationsPanel mongoMovie={movie} />
+      </main>
+    </Suspense>
   );
 }

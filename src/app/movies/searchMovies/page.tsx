@@ -57,13 +57,15 @@ function SuspendedElement() {
 
       const queryType = searchParams.get("queryType") || "movie";
 
+      genrateYearsQuery(year);
+
       const query = {
         ...(title && { title: { $regex: title, $options: "i" } }),
         // ...(title && { $text: { $search: { text: title, path: "title" } } }),
         ...(type && { type }),
         ...(genres.length && { genres: { $in: genres } }),
         ...(countries.length && { countries: { $in: countries } }),
-        ...(year.length && { year: { $in: year } }),
+        ...(year.length && { $or: genrateYearsQuery(year) }),
       };
 
       const req = {
@@ -155,4 +157,48 @@ function formatSortBy(sortBy: string | null) {
 function formatSortOrder(sortOrder: string | null): 1 | -1 {
   if (sortOrder === "ascending") return 1;
   else return -1;
+}
+
+function genrateYearsQuery(years: Array<string>) {
+  let inArray: Array<number> = [];
+  let rangeArr: Array<{}> = [];
+  years.map((yr) => {
+    switch (yr) {
+      case "2000s":
+        rangeArr.push({ year: { $gt: 2000, $lte: 2009 } });
+        break;
+      case "1990s":
+        rangeArr.push({ year: { $gt: 1990, $lte: 1999 } });
+        break;
+      case "1980s":
+        rangeArr.push({ year: { $gt: 1980, $lte: 1989 } });
+        break;
+      case "1970s":
+        rangeArr.push({ year: { $gt: 1970, $lte: 1979 } });
+        break;
+      case "1960s":
+        rangeArr.push({ year: { $gt: 1960, $lte: 1969 } });
+        break;
+      case "1950s":
+        rangeArr.push({ year: { $gt: 1950, $lte: 1959 } });
+        break;
+      case "1940s":
+        rangeArr.push({ year: { $gt: 1940, $lte: 1949 } });
+        break;
+      case "1930s":
+        rangeArr.push({ year: { $gt: 1930, $lte: 1939 } });
+        break;
+      case "1920s":
+        rangeArr.push({ year: { $gt: 1920, $lte: 1929 } });
+        break;
+      case "1910s":
+        rangeArr.push({ year: { $gt: 1910, $lte: 1919 } });
+        break;
+      default:
+        inArray.push(Number(yr));
+    }
+  });
+
+  let yearsQuery = [{ year: { $in: inArray } }, ...rangeArr];
+  return yearsQuery;
 }

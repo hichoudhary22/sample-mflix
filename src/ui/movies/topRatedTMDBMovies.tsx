@@ -21,7 +21,7 @@ export default async function TopRatedTMDBMovies() {
               height={10}
               className=" z-10 min-w-[200px] rounded-md"
             />
-            <p className="absolute bottom-0 overflow-hidden p-2 text-white">
+            <p className="absolute bottom-0 p-2 text-white">
               {mov.title || mov.name}
             </p>
           </Link>

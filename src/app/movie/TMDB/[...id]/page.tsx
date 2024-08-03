@@ -7,6 +7,8 @@ import ProductionCompaniesPanel from "@/ui/movie/TMDB/productionCompaniesPanel";
 import RecommendationsPanel from "@/ui/movie/TMDB/recommendationsPanel";
 import ReviewsPanel from "@/ui/movie/TMDB/reviewsPanel";
 import SeasonsPanel from "@/ui/movie/TMDB/seasonsPanel";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function TMDBMovieDetailsPage({
   params,
@@ -24,14 +26,16 @@ export default async function TMDBMovieDetailsPage({
       </div>
     );
   return (
-    <main>
-      <PosterPanel tmdbMovie={TMDB_Movie} />
-      {TMDB_Movie.seasons && <SeasonsPanel TMDB_Movie={TMDB_Movie} />}
-      <ProductionCompaniesPanel TMDB_Movie={TMDB_Movie} />
-      <CastPanel TMDB_Movie={TMDB_Movie} />
-      <MediaPanel TMDB_Movie={TMDB_Movie} />
-      <ReviewsPanel tmdbMovie={TMDB_Movie} />
-      <RecommendationsPanel TMDB_Movie={TMDB_Movie} />
-    </main>
+    <Suspense fallback={<Loading />}>
+      <main>
+        <PosterPanel tmdbMovie={TMDB_Movie} />
+        {TMDB_Movie.seasons && <SeasonsPanel TMDB_Movie={TMDB_Movie} />}
+        <ProductionCompaniesPanel TMDB_Movie={TMDB_Movie} />
+        <CastPanel TMDB_Movie={TMDB_Movie} />
+        <MediaPanel TMDB_Movie={TMDB_Movie} />
+        <ReviewsPanel tmdbMovie={TMDB_Movie} />
+        <RecommendationsPanel TMDB_Movie={TMDB_Movie} />
+      </main>
+    </Suspense>
   );
 }
