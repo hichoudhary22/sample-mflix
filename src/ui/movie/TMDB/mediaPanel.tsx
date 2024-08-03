@@ -1,12 +1,12 @@
 "use client";
 import { imgObj, TMDBMovie, vidObj } from "@/lib/defination";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MediaPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
-  const [mediaType, setMediaType] = useState("Trailer");
+  const [mediaType, setMediaType] = useState("");
   const { backdrops, posters, logos } = TMDB_Movie.images;
-  const mediaOptions = [];
+  const mediaOptions: Array<string> = [];
 
   const Trailer = TMDB_Movie.videos.results.filter(
     (video) => video.type === "Trailer",
@@ -24,6 +24,11 @@ export default function MediaPanel({ TMDB_Movie }: { TMDB_Movie: TMDBMovie }) {
   backdrops.length > 0 && mediaOptions.push("backdrops");
   posters.length > 0 && mediaOptions.push("posters");
   logos.length > 0 && mediaOptions.push("logos");
+
+  if (!mediaType) {
+    setMediaType(mediaOptions[0]);
+  }
+
   return (
     <section>
       <p className="font-semibold">Media :</p>
