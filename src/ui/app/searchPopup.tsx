@@ -29,8 +29,8 @@ export default function SearchPopup() {
   }, [searchText]);
 
   function resetSearchPopup() {
-    setSearchText("");
     setSearchedMovies([]);
+    setSearchText("");
     setShowSearchPanel(false);
   }
 

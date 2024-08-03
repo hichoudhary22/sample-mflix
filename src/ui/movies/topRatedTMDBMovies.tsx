@@ -10,7 +10,7 @@ export default async function TopRatedTMDBMovies() {
   return (
     <section className="my-3">
       <p className="text-2xl font-semibold">Top Rated imdb :</p>
-      <div className="relative  flex gap-2 overflow-scroll">
+      <div className="relative flex gap-2 overflow-scroll">
         {movies.results.map((mov) => (
           <Link href={`/movie/TMDB/movie/${mov.id}`} key={mov.id}>
             <ImageWithFallback
@@ -19,9 +19,9 @@ export default async function TopRatedTMDBMovies() {
               alt="movie poster"
               width={10}
               height={10}
-              className=" z-10 min-w-[200px] rounded-md"
+              className=" z-10 min-w-[200px] rounded-md brightness-75"
             />
-            <p className="absolute bottom-0 p-2 text-white">
+            <p className="absolute bottom-0 max-w-[150px] p-2 text-white">
               {mov.title || mov.name}
             </p>
           </Link>

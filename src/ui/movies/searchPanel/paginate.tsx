@@ -81,7 +81,7 @@ function PageNumber({
 }) {
   return (
     <button
-      className={`mx-[2px] rounded-full border border-black px-2 py-1 ${active && `bg-black text-white`}`}
+      className={`mx-[1px] rounded-full border border-black px-3 py-1 ${active && `bg-yellow-400 text-white`}`}
       onClick={() => pageChange(num)}
     >
       {num}
