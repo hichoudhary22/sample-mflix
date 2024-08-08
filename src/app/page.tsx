@@ -10,7 +10,7 @@ export default function Home() {
     "Responsive design which makes good UX.",
   ];
   const sampleImages = [
-    "HomePage.png",
+    "home.png",
     "MongoMovieHomePanel.png",
     "MongoMovieDetailsPage.png",
     "MongoMovieDetailsPage2.png",
