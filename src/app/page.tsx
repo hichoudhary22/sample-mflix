@@ -8,6 +8,7 @@ export default function Home() {
     "See details of any particular movie like directors, cast, country, language etc.",
     "We'll suggest related movie based on your search.",
     "Responsive design which makes good UX.",
+    "Watch trailers of the movies directly under the details",
   ];
   const sampleImages = [
     "home.png",
@@ -25,19 +26,15 @@ export default function Home() {
     <main className="h-full w-full">
       <section className="m-auto my-6 text-center sm:w-[50vw]">
         <p>Hello There !</p>
+        <p>Welcome to sample_mflix,</p>
         <p>
-          Welcome to sample_mflix, let me tell you about this project, this
-          project started as a e-commerce-app. But soon I realised that there
-          were not much data available for me to properly make a good E-Commerce
-          website.
+          I used MongoDB's sample_mflix database to provide information about
+          movies. The information includes cast, poster, year of release,
+          director, country etc. But the information and the movies available on
+          MongoDB is limited. So I have also used TMDB's api to include newer
+          movies.
         </p>
-        <p>
-          I even used faker api to make fake data and products, but it was not
-          very useful. Then I found sample Database in my mongoDB account and
-          decided to use it.
-        </p>
-        <p>But halfway through I realised that it too was not enough...</p>
-        <p>So I also tapped into TMDB.</p>
+        <p>Using TMDB's api also made including trailers possible.</p>
       </section>
       <section className="my-6 sm:flex">
         <div className="p-4 sm:w-[33vw]">
@@ -70,7 +67,7 @@ export default function Home() {
           href={"/movies"}
           className="rounded-full bg-yellow-400 px-20 py-3 text-4xl font-semibold"
         >
-          Enter
+          Homepage
         </Link>
       </div>
     </main>
