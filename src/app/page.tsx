@@ -28,13 +28,13 @@ export default function Home() {
         <p>Hello There !</p>
         <p>Welcome to sample_mflix,</p>
         <p>
-          I used MongoDB's sample_mflix database to provide information about
-          movies. The information includes cast, poster, year of release,
+          I used MongoDB&apos;s sample_mflix database to provide information
+          about movies. The information includes cast, poster, year of release,
           director, country etc. But the information and the movies available on
-          MongoDB is limited. So I have also used TMDB's api to include newer
-          movies.
+          MongoDB is limited. So I have also used TMDB&apos;s api to include
+          newer movies.
         </p>
-        <p>Using TMDB's api also made including trailers possible.</p>
+        <p>Using TMDB&apos;s api also made including trailers possible.</p>
       </section>
       <section className="my-6 sm:flex">
         <div className="p-4 sm:w-[33vw]">
